@@ -31,7 +31,8 @@
             font-weight: bold;
         }
         .form-group input,
-        .form-group select {
+        .form-group select,
+        .form-group button {
             width: calc(100% - 16px);
             padding: 8px;
             margin-bottom: 10px;
@@ -89,26 +90,42 @@
             padding: 10px;
             border-radius: 4px;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Create School Supplies List</h1>
         <div class="form-group">
-            <label for="schoolName">School Name</label>
+            <label for="schoolNameSelect">School Name</label>
             <select id="schoolNameSelect" onchange="selectSchool()">
                 <option value="">Choose an existing school</option>
                 <!-- Existing schools will be populated here -->
             </select>
-            <input type="text" id="schoolName" placeholder="Or enter new school name">
+            <button type="button" onclick="showNewSchoolInput()">Add New School</button>
+            <input type="text" id="schoolName" class="hidden" placeholder="Enter new school name">
         </div>
         <div class="form-group">
-            <label for="grade">Grade</label>
-            <select id="gradeSelect" onchange="selectGrade()">
-                <option value="">Choose an existing grade</option>
-                <!-- Existing grades will be populated here -->
+            <label for="gradeSelect">Grade</label>
+            <select id="gradeSelect">
+                <option value="">Choose a grade</option>
+                <option value="Pre-K">Pre-K</option>
+                <option value="Kindergarten">Kindergarten</option>
+                <option value="1st Grade">1st Grade</option>
+                <option value="2nd Grade">2nd Grade</option>
+                <option value="3rd Grade">3rd Grade</option>
+                <option value="4th Grade">4th Grade</option>
+                <option value="5th Grade">5th Grade</option>
+                <option value="6th Grade">6th Grade</option>
+                <option value="7th Grade">7th Grade</option>
+                <option value="8th Grade">8th Grade</option>
+                <option value="9th Grade">9th Grade</option>
+                <option value="10th Grade">10th Grade</option>
+                <option value="11th Grade">11th Grade</option>
+                <option value="12th Grade">12th Grade</option>
             </select>
-            <input type="text" id="grade" placeholder="Or enter new grade">
         </div>
         <div class="form-group">
             <label for="existingItems">Select Existing Item</label>
@@ -184,18 +201,15 @@
             existingItemsSelect.appendChild(option);
         });
 
+        function showNewSchoolInput() {
+            document.getElementById('schoolName').classList.remove('hidden');
+        }
+
         function selectSchool() {
             const selectedSchool = schoolNameSelect.value;
             if (selectedSchool) {
                 document.getElementById('schoolName').value = selectedSchool;
-                populateGrades(selectedSchool);
-            }
-        }
-
-        function selectGrade() {
-            const selectedGrade = gradeSelect.value;
-            if (selectedGrade) {
-                document.getElementById('grade').value = selectedGrade;
+                document.getElementById('schoolName').classList.add('hidden');
             }
         }
 
@@ -214,8 +228,8 @@
         }
 
         function addItem() {
-            const schoolName = document.getElementById('schoolName').value;
-            const grade = document.getElementById('grade').value;
+            const schoolName = document.getElementById('schoolName').value || schoolNameSelect.value;
+            const grade = document.getElementById('gradeSelect').value;
             const itemName = document.getElementById('itemName').value;
             const itemTotal = document.getElementById('itemTotal').value;
             const itemUnitSingular = document.getElementById('itemUnitSingular').value;
@@ -256,7 +270,6 @@
 
             renderItemsList();
             clearForm();
-            populateSchools();
         }
 
         function clearForm() {
@@ -289,7 +302,7 @@
         function editItem(school, grade, index) {
             const item = itemList[school][grade][index];
             document.getElementById('schoolName').value = school;
-            document.getElementById('grade').value = grade;
+            document.getElementById('gradeSelect').value = grade; // Fixed here
             document.getElementById('itemName').value = item.Name;
             document.getElementById('itemTotal').value = item.Total;
             document.getElementById('itemUnitSingular').value = item.Unit[0];
@@ -330,18 +343,8 @@
                 option.textContent = school;
                 schoolNameSelect.appendChild(option);
             }
-        }
-
-        function populateGrades(school) {
-            gradeSelect.innerHTML = '<option value="">Choose an existing grade</option>';
-            if (itemList[school]) {
-                for (const grade in itemList[school]) {
-                    const option = document.createElement('option');
-                    option.value = grade;
-                    option.textContent = grade;
-                    gradeSelect.appendChild(option);
-                }
-            }
+            schoolNameSelect.value = ''; // Reset school name select
+            gradeSelect.value = ''; // Reset grade select
         }
 
         document.addEventListener('DOMContentLoaded', () => {
