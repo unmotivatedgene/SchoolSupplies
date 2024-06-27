@@ -8,29 +8,59 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f0f8ff;
         }
         .container {
             max-width: 800px;
             margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         h1 {
             text-align: center;
+            color: #333;
         }
         .form-group {
             margin-bottom: 15px;
         }
-        label {
+        .form-group label {
             display: block;
             margin-bottom: 5px;
+            font-weight: bold;
         }
-        input, select {
+        .form-group input,
+        .form-group select {
             width: calc(100% - 16px);
             padding: 8px;
             margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group.inline {
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-group.inline .form-group {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .form-group.inline .form-group:last-child {
+            margin-right: 0;
         }
         button {
             padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
         .item-list {
             margin-top: 20px;
@@ -57,6 +87,7 @@
         .output pre {
             background: #f4f4f4;
             padding: 10px;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -64,8 +95,20 @@
     <div class="container">
         <h1>Create School Supplies List</h1>
         <div class="form-group">
+            <label for="schoolName">School Name</label>
+            <select id="schoolNameSelect" onchange="selectSchool()">
+                <option value="">Choose an existing school</option>
+                <!-- Existing schools will be populated here -->
+            </select>
+            <input type="text" id="schoolName" placeholder="Or enter new school name">
+        </div>
+        <div class="form-group">
             <label for="grade">Grade</label>
-            <input type="text" id="grade" placeholder="Enter grade (e.g., 3rd Grade)">
+            <select id="gradeSelect" onchange="selectGrade()">
+                <option value="">Choose an existing grade</option>
+                <!-- Existing grades will be populated here -->
+            </select>
+            <input type="text" id="grade" placeholder="Or enter new grade">
         </div>
         <div class="form-group">
             <label for="existingItems">Select Existing Item</label>
@@ -77,29 +120,33 @@
             <label for="itemName">Item Name</label>
             <input type="text" id="itemName" placeholder="Enter item name">
         </div>
-        <div class="form-group">
-            <label for="itemTotal">Total</label>
-            <input type="number" id="itemTotal" placeholder="Enter total number of items">
+        <div class="form-group inline">
+            <div class="form-group">
+                <label for="itemTotal">Total</label>
+                <input type="number" id="itemTotal" placeholder="Enter total number of items">
+            </div>
+            <div class="form-group">
+                <label for="itemUnitSingular">Unit Singular</label>
+                <input type="text" id="itemUnitSingular" placeholder="Enter unit singular (e.g., Box)">
+            </div>
+            <div class="form-group">
+                <label for="itemUnitPlural">Unit Plural</label>
+                <input type="text" id="itemUnitPlural" placeholder="Enter unit plural (e.g., Boxes)">
+            </div>
         </div>
-        <div class="form-group">
-            <label for="itemUnitSingular">Unit Singular</label>
-            <input type="text" id="itemUnitSingular" placeholder="Enter unit singular (e.g., Box)">
-        </div>
-        <div class="form-group">
-            <label for="itemUnitPlural">Unit Plural</label>
-            <input type="text" id="itemUnitPlural" placeholder="Enter unit plural (e.g., Boxes)">
-        </div>
-        <div class="form-group">
-            <label for="itemNote">Note</label>
-            <input type="text" id="itemNote" placeholder="Enter any additional note">
-        </div>
-        <div class="form-group">
-            <label for="itemSex">Sex</label>
-            <select id="itemSex">
-                <option value="">None</option>
-                <option value="Girls">Girls</option>
-                <option value="Boys">Boys</option>
-            </select>
+        <div class="form-group inline">
+            <div class="form-group">
+                <label for="itemNote">Note</label>
+                <input type="text" id="itemNote" placeholder="Enter any additional note">
+            </div>
+            <div class="form-group">
+                <label for="itemSex">Sex</label>
+                <select id="itemSex">
+                    <option value="">None</option>
+                    <option value="Girls">Girls</option>
+                    <option value="Boys">Boys</option>
+                </select>
+            </div>
         </div>
         <button onclick="addItem()">Add Item</button>
         <div class="item-list">
@@ -127,6 +174,8 @@
         const outputJson = document.getElementById('outputJson');
         const itemsList = document.getElementById('itemsList');
         const existingItemsSelect = document.getElementById('existingItems');
+        const schoolNameSelect = document.getElementById('schoolNameSelect');
+        const gradeSelect = document.getElementById('gradeSelect');
 
         existingItems.forEach((item, index) => {
             const option = document.createElement('option');
@@ -134,6 +183,21 @@
             option.textContent = item.name;
             existingItemsSelect.appendChild(option);
         });
+
+        function selectSchool() {
+            const selectedSchool = schoolNameSelect.value;
+            if (selectedSchool) {
+                document.getElementById('schoolName').value = selectedSchool;
+                populateGrades(selectedSchool);
+            }
+        }
+
+        function selectGrade() {
+            const selectedGrade = gradeSelect.value;
+            if (selectedGrade) {
+                document.getElementById('grade').value = selectedGrade;
+            }
+        }
 
         function selectExistingItem() {
             const selectedItem = existingItemsSelect.value;
@@ -150,6 +214,7 @@
         }
 
         function addItem() {
+            const schoolName = document.getElementById('schoolName').value;
             const grade = document.getElementById('grade').value;
             const itemName = document.getElementById('itemName').value;
             const itemTotal = document.getElementById('itemTotal').value;
@@ -158,7 +223,7 @@
             const itemNote = document.getElementById('itemNote').value;
             const itemSex = document.getElementById('itemSex').value;
 
-            if (!grade || !itemName || !itemTotal || !itemUnitSingular || !itemUnitPlural) {
+            if (!schoolName || !grade || !itemName || !itemTotal || !itemUnitSingular || !itemUnitPlural) {
                 alert('Please fill in all required fields');
                 return;
             }
@@ -171,11 +236,14 @@
             if (itemNote) item.Note = itemNote;
             if (itemSex) item.Sex = itemSex;
 
-            if (!itemList[grade]) {
-                itemList[grade] = [];
+            if (!itemList[schoolName]) {
+                itemList[schoolName] = {};
+            }
+            if (!itemList[schoolName][grade]) {
+                itemList[schoolName][grade] = [];
             }
 
-            itemList[grade].push(item);
+            itemList[schoolName][grade].push(item);
 
             // Check if the item is new and add it to newBaseItems
             if (!existingItems.some(existingItem => existingItem.name === itemName) && !newBaseItems.some(newItem => newItem.Name === itemName)) {
@@ -188,6 +256,7 @@
 
             renderItemsList();
             clearForm();
+            populateSchools();
         }
 
         function clearForm() {
@@ -202,21 +271,24 @@
 
         function renderItemsList() {
             itemsList.innerHTML = '';
-            for (const grade in itemList) {
-                itemList[grade].forEach((item, index) => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        ${grade}: ${item.Total} ${item.Unit[item.Total > 1 ? 1 : 0]} of ${item.Name} ${item.Note ? `(Note: ${item.Note})` : ''} ${item.Sex ? `(Sex: ${item.Sex})` : ''}
-                        <button onclick="editItem('${grade}', ${index})">Edit</button>
-                        <button onclick="deleteItem('${grade}', ${index})">Delete</button>
-                    `;
-                    itemsList.appendChild(li);
-                });
+            for (const school in itemList) {
+                for (const grade in itemList[school]) {
+                    itemList[school][grade].forEach((item, index) => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `
+                            ${school} - ${grade}: ${item.Total} ${item.Unit[item.Total > 1 ? 1 : 0]} of ${item.Name} ${item.Note ? `(Note: ${item.Note})` : ''} ${item.Sex ? `(Sex: ${item.Sex})` : ''}
+                            <button onclick="editItem('${school}', '${grade}', ${index})">Edit</button>
+                            <button onclick="deleteItem('${school}', '${grade}', ${index})">Delete</button>
+                        `;
+                        itemsList.appendChild(li);
+                    });
+                }
             }
         }
 
-        function editItem(grade, index) {
-            const item = itemList[grade][index];
+        function editItem(school, grade, index) {
+            const item = itemList[school][grade][index];
+            document.getElementById('schoolName').value = school;
             document.getElementById('grade').value = grade;
             document.getElementById('itemName').value = item.Name;
             document.getElementById('itemTotal').value = item.Total;
@@ -224,23 +296,24 @@
             document.getElementById('itemUnitPlural').value = item.Unit[1];
             document.getElementById('itemNote').value = item.Note || '';
             document.getElementById('itemSex').value = item.Sex || '';
-            deleteItem(grade, index);
+            deleteItem(school, grade, index);
         }
 
-        function deleteItem(grade, index) {
-            itemList[grade].splice(index, 1);
-            if (itemList[grade].length === 0) delete itemList[grade];
+        function deleteItem(school, grade, index) {
+            itemList[school][grade].splice(index, 1);
+            if (itemList[school][grade].length === 0) delete itemList[school][grade];
+            if (Object.keys(itemList[school]).length === 0) delete itemList[school];
             renderItemsList();
         }
 
         function generateJSON() {
             const output = {
-                Items: {},
-                SupplyLists: itemList
+                BaseItems: {},
+                SchoolSupplies: itemList
             };
 
             newBaseItems.forEach(item => {
-                output.Items[item.Name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '')] = {
+                output.BaseItems[item.Name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '')] = {
                     Name: item.Name,
                     Unit: item.Unit
                 };
@@ -248,6 +321,32 @@
 
             outputJson.textContent = JSON.stringify(output, null, 2);
         }
+
+        function populateSchools() {
+            schoolNameSelect.innerHTML = '<option value="">Choose an existing school</option>';
+            for (const school in itemList) {
+                const option = document.createElement('option');
+                option.value = school;
+                option.textContent = school;
+                schoolNameSelect.appendChild(option);
+            }
+        }
+
+        function populateGrades(school) {
+            gradeSelect.innerHTML = '<option value="">Choose an existing grade</option>';
+            if (itemList[school]) {
+                for (const grade in itemList[school]) {
+                    const option = document.createElement('option');
+                    option.value = grade;
+                    option.textContent = grade;
+                    gradeSelect.appendChild(option);
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateSchools();
+        });
     </script>
 </body>
 </html>
