@@ -3,173 +3,143 @@
 
 <head>
     <script>
-        // Example data from our previous JSON. You would need to populate this with all items and class lists.
-        const items = [
-            { "id": 1, "item": "Crayola Crayons (12ct)", "type": "box", "details": {} },
-            { "id": 2, "item": "Elmer’s Glue Bottle (4 oz.)", "type": "bottle", "details": {} },
-            { "id": 3, "item": "Crayola Markers (broadline, washable, classic colors)", "type": "box", "details": {} },
-            { "id": 4, "item": "Fiskar Scissors (5 inch, blunt tip)", "type": "pair", "details": {} },
-            { "id": 5, "item": "Elmer’s Glue Sticks", "type": "stick", "details": {} },
-            { "id": 6, "item": "Plastic School Box (small)", "type": "box", "details": {} },
-            { "id": 7, "item": "Kleenex Tissues", "type": "box", "details": {} },
-            { "id": 8, "item": "Child Size Headphones (wired, straight jack, over-ear)", "type": "pair", "details": {} },
-            { "id": 9, "item": "Backpack (large, no wheels)", "type": "piece", "details": {} },
-            { "id": 10, "item": "Beach Towel", "type": "piece", "details": {} },
-            { "id": 11, "item": "Baby Wipes", "type": "package", "details": {} },
-            { "id": 12, "item": "Storage Bags (gallon size)", "type": "box", "details": {} },
-            { "id": 13, "item": "Storage Bags (quart size)", "type": "box", "details": {} },
-            { "id": 14, "item": "Ticonderoga Pencils (12ct)", "type": "package", "details": {} },
-            { "id": 15, "item": "Plastic Pocket Folders (with brads)", "type": "piece", "details": {} },
-            { "id": 16, "item": "PRIMARY Composition Notebook (black, half ruled)", "type": "book", "details": {} },
-            { "id": 17, "item": "Pink Erasers", "type": "eraser", "details": {} },
-            { "id": 18, "item": "Crayola Watercolor Paint (with brush, 8 colors)", "type": "pallet", "details": {} },
-            { "id": 20, "item": "Fine Tip Expo Markers (black)", "type": "package", "details": {} },
-            { "id": 22, "item": "Small Plain Paper Plates", "type": "package", "details": {} },
-            { "id": 23, "item": "Spiral Notebook (Wide Ruled 70pgs)", "type": "book", "details": {} },
-            { "id": 24, "item": "Composition Notebook (black)", "type": "book", "details": {} },
-            { "id": 25, "item": "Crayola Markers (10ct, washable, primary colors)", "type": "package", "details": {} },
-            { "id": 26, "item": "Fine Point Black Sharpie", "type": "marker", "details": {} },
-            { "id": 27, "item": "Elmer’s Glue Bottle", "type": "bottle", "details": {} },
-            { "id": 28, "item": "Small Plastic or Metal School Box", "type": "box", "details": {} },
-            { "id": 30, "item": "1” Binders (black)", "type": "binder", "details": {} },
-            { "id": 31, "item": "Crayola Colored Pencils (12ct)", "type": "box", "details": {} },
-            { "id": 32, "item": "Dry Erase Markers (black)", "type": "marker", "details": {} },
-            { "id": 33, "item": "Yellow Hi-Liter", "type": "highlighter", "details": {} },
-            { "id": 34, "item": "Fiskar Scissors (5 inch, pointed tip)", "type": "pair", "details": {} },
-            { "id": 35, "item": "Crayola Crayons (24ct)", "type": "box", "details": {} }
-        ];
-        const gradeItems = {
-            "Pre-Kindergarten": [
-                { "id": 1, "quantity": 2 },
-                { "id": 2, "quantity": 1 },
-                { "id": 3, "quantity": 1 },
-                { "id": 4, "quantity": 1 },
-                { "id": 5, "quantity": 4 },
-                { "id": 6, "quantity": 1 },
-                { "id": 7, "quantity": 1 },
-                { "id": 8, "quantity": 1 },
-                { "id": 9, "quantity": 1 },
-                { "id": 10, "quantity": 1 },
-                { "id": 11, "quantity": 2 },
-                { "id": 12, "quantity": 1, "gender": "Girls" },
-                { "id": 13, "quantity": 1, "gender": "Girls" }
-            ],
-            "Kindergarten": [
-                { "id": 14, "quantity": 1 },
-                { "id": 15, "quantity": 4 },
-                { "id": 16, "quantity": 1 },
-                { "id": 3, "quantity": 1 },
-                { "id": 17, "quantity": 4 },
-                { "id": 31, "quantity": 3, "details": { "countPerBox": 24 } },
-                { "id": 1, "quantity": 3, "details": { "countPerBox": 8 } },
-                { "id": 5, "quantity": 10 },
-                { "id": 2, "quantity": 2 },
-                { "id": 18, "quantity": 1 },
-                { "id": 4, "quantity": 1 },
-                { "id": 20, "quantity": 1 },
-                { "id": 8, "quantity": 1 },
-                { "id": 9, "quantity": 1 },
-                { "id": 7, "quantity": 2 },
-                { "id": 13, "quantity": 1, "gender": "Girls" },
-                { "id": 11, "quantity": 1, "gender": "Girls" },
-                { "id": 12, "quantity": 1, "gender": "Boys" },
-                { "id": 22, "quantity": 1, "gender": "Boys" }
-            ],
-            "First Grade": [
-                { "id": 23, "quantity": 1 },
-                { "id": 24, "quantity": 1 },
-                { "id": 15, "quantity": 2 },
-                { "id": 18, "quantity": 3 },
-                { "id": 1, "quantity": 3, "details": { "countPerBox": 24 } },
-                { "id": 25, "quantity": 2 },
-                { "id": 14, "quantity": 1 },
-                { "id": 26, "quantity": 1 },
-                { "id": 17, "quantity": 1 },
-                { "id": 5, "quantity": 12 },
-                { "id": 2, "quantity": 1 },
-                { "id": 4, "quantity": 1 },
-                { "id": 28, "quantity": 1 },
-                { "id": 7, "quantity": 2 },
-                { "id": 11, "quantity": 1 },
-                { "id": 8, "quantity": 1 },
-                { "id": 12, "quantity": 1, "gender": "Boys" },
-                { "id": 13, "quantity": 1, "gender": "Girls" },
-                { "id": 9, "quantity": 1 }
-            ],
-            "Second Grade": [
-                { "id": 23, "quantity": 2 },
-                { "id": 24, "quantity": 1 },
-                { "id": 15, "quantity": 2 },
-                { "id": 30, "quantity": 1 },
-                { "id": 1, "quantity": 3, "details": { "countPerBox": 24 } },
-                { "id": 31, "quantity": 3 },
-                { "id": 3, "quantity": 2, "details": { "line": "wide point", "countPerBox": 8 } },
-                { "id": 32, "quantity": 2 },
-                { "id": 14, "quantity": 2 },
-                { "id": 33, "quantity": 1 },
-                { "id": 17, "quantity": 2 },
-                { "id": 2, "quantity": 1 },
-                { "id": 5, "quantity": 12 },
-                { "id": 34, "quantity": 1 },
-                { "id": 6, "quantity": 1 },
-                { "id": 8, "quantity": 1 },
-                { "id": 7, "quantity": 2 },
-                { "id": 12, "quantity": 1, "gender": "Boys" },
-                { "id": 13, "quantity": 1, "gender": "Girls" },
-                { "id": 9, "quantity": 1 }
-            ]
+        // Example JSON data
+        const data = {
+            "SchoolSupplies": {
+                "GRISD Elementary": {
+                    "2nd Grade": [
+                        {
+                            "Name": "5-inch pointed scissors (Fiskar Brand)",
+                            "Total": 2,
+                            "Unit": [
+                                "Pair",
+                                "Pairs"
+                            ],
+                            "CountPerUnit": 1
+                        },
+                        {
+                            "Name": "24-Pack Crayola Crayons",
+                            "Total": 1,
+                            "Unit": [
+                                "Pack",
+                                "Packs"
+                            ],
+                            "CountPerUnit": 24,
+                            "Note": "Crayola Brand"
+                        },
+                        {
+                            "Name": "Green Baloons",
+                            "Total": 2,
+                            "Unit": [
+                                "Box",
+                                "Boxes"
+                            ],
+                            "CountPerUnit": 6,
+                            "Sex": "Boys"
+                        },
+                        {
+                            "Name": "Pink Baloons",
+                            "Total": 2,
+                            "Unit": [
+                                "Box",
+                                "Boxes"
+                            ],
+                            "CountPerUnit": 6,
+                            "Sex": "Girls"
+                        }
+                    ]
+                }
+            }
         };
+
+        const schoolSupplies = data.SchoolSupplies;
+
+        function populateSchools() {
+            const schoolDropdown = document.querySelector(".schoolDropdown");
+
+            for (let school in schoolSupplies) {
+                const option = document.createElement("option");
+                option.value = school;
+                option.textContent = school;
+                schoolDropdown.appendChild(option);
+            }
+        }
+
+        function populateGrades(schoolDropdown) {
+            const selectedSchool = schoolDropdown.value;
+            const gradeDropdown = schoolDropdown.closest('.gradeSet').querySelector('.gradeDropdown');
+            gradeDropdown.innerHTML = '';
+
+            if (selectedSchool) {
+                for (let grade in schoolSupplies[selectedSchool]) {
+                    const option = document.createElement("option");
+                    option.value = grade;
+                    option.textContent = grade;
+                    gradeDropdown.appendChild(option);
+                }
+            }
+        }
 
         function generateList() {
             const gradeSets = document.querySelectorAll(".gradeSet");
             const combinedList = document.getElementById("combinedList");
-            const separateLists = document.getElementById("separateLists"); // Assuming you have a container for separate lists
+            const separateLists = document.getElementById("separateLists");
 
-            // Clear previous lists
             combinedList.innerHTML = '';
             separateLists.innerHTML = '';
 
-            // Store combined items for aggregation
             let combinedItems = {};
+            let separateItems = {};
 
-            gradeSets.forEach((gradeSet, index) => {
+            gradeSets.forEach((gradeSet) => {
+                const schoolDropdown = gradeSet.querySelector(".schoolDropdown");
                 const gradeDropdown = gradeSet.querySelector(".gradeDropdown");
-                const boysDropdown = gradeSet.querySelector(".boysDropdown");
-                const girlsDropdown = gradeSet.querySelector(".girlsDropdown");
+                const boysInput = gradeSet.querySelector(".boysInput");
+                const girlsInput = gradeSet.querySelector(".girlsInput");
+                const anyInput = gradeSet.querySelector(".anyInput");
 
+                const school = schoolDropdown.value;
                 const grade = gradeDropdown.value;
-                const boysCount = parseInt(boysDropdown.value, 10);
-                const girlsCount = parseInt(girlsDropdown.value, 10);
+                const boysCount = parseInt(boysInput.value, 10) || 0;
+                const girlsCount = parseInt(girlsInput.value, 10) || 0;
+                const anyCount = parseInt(anyInput.value, 10) || 0;
 
-                // Create separate list for this grade set
-                const separateList = document.createElement("ul");
-                const listHeading = document.createElement("h3");
-                listHeading.innerText = `List for ${gradeDropdown.value}`;
-                separateLists.appendChild(listHeading);
-                separateLists.appendChild(separateList);
+                if (!separateItems[school]) {
+                    separateItems[school] = {};
+                }
 
-                ['Boys', 'Girls'].forEach(gender => {
-                    const genderCount = gender === 'Boys' ? boysCount : girlsCount;
+                ['Boys', 'Girls', 'Any'].forEach(gender => {
+                    const genderCount = gender === 'Boys' ? boysCount : gender === 'Girls' ? girlsCount : anyCount;
 
                     if (genderCount !== 0) {
-                        gradeItems[grade].forEach(item => {
-                            if (!item.gender || item.gender === gender) {
-                                const itemDetails = items.find(i => i.id === item.id);
-                                //console.log(item.id);
-                                const itemKey = `${item.id}-${gender}`;
+                        if (!separateItems[school][grade]) {
+                            separateItems[school][grade] = {};
+                        }
+                        if (!separateItems[school][grade][gender]) {
+                            separateItems[school][grade][gender] = [];
+                        }
 
-                                // Add to the separate list
-                                const separateListItem = document.createElement("li");
-                                separateListItem.innerText = `${item.quantity} x ${itemDetails.item}`;
-                                separateList.appendChild(separateListItem);
+                        schoolSupplies[school][grade].forEach(item => {
+                            if (!item.Sex || item.Sex === gender || gender === 'Any') {
+                                const itemKey = item.Name;
 
-                                // Combine items
+                                const separateItem = {
+                                    text: item.Name,
+                                    unit: item.Unit,
+                                    quantity: item.Total * genderCount,
+                                    countPerUnit: item.CountPerUnit
+                                };
+
+                                separateItems[school][grade][gender].push(separateItem);
+
                                 if (combinedItems[itemKey]) {
-                                    combinedItems[itemKey].quantity += item.quantity * genderCount;
+                                    combinedItems[itemKey].quantity += item.Total * genderCount;
                                 } else {
                                     combinedItems[itemKey] = {
-                                        text: itemDetails.item,
-                                        quantity: item.quantity * genderCount
+                                        text: item.Name,
+                                        unit: item.Unit,
+                                        quantity: item.Total * genderCount,
+                                        countPerUnit: item.CountPerUnit
                                     };
                                 }
                             }
@@ -178,18 +148,52 @@
                 });
             });
 
-            // Populate the combined list
             for (let key in combinedItems) {
                 const listItem = document.createElement("li");
-                listItem.innerText = `${combinedItems[key].quantity} x ${combinedItems[key].text}`;
+                const unit = combinedItems[key].quantity > 1 ? combinedItems[key].unit[1] : combinedItems[key].unit[0];
+                listItem.innerHTML = `<input type="checkbox"> ${combinedItems[key].quantity} ${unit} of ${combinedItems[key].text} (${combinedItems[key].countPerUnit} per ${combinedItems[key].unit[0]})`;
                 combinedList.appendChild(listItem);
+            }
+
+            for (let school in separateItems) {
+                const schoolHeading = document.createElement("h3");
+                schoolHeading.innerText = school;
+                separateLists.appendChild(schoolHeading);
+
+                for (let grade in separateItems[school]) {
+                    for (let gender in separateItems[school][grade]) {
+                        const genderHeading = document.createElement("h4");
+                        genderHeading.innerText = `${grade} ${gender}`;
+                        separateLists.appendChild(genderHeading);
+
+                        const separateList = document.createElement("ul");
+
+                        separateItems[school][grade][gender].forEach(item => {
+                            const unit = item.quantity > 1 ? item.unit[1] : item.unit[0];
+                            const listItem = document.createElement("li");
+                            listItem.innerHTML = `<input type="checkbox"> ${item.quantity} ${unit} of ${item.text} (${item.countPerUnit} per ${item.unit[0]})`;
+                            separateList.appendChild(listItem);
+                        });
+
+                        separateLists.appendChild(separateList);
+                    }
+                }
             }
         }
 
         function addGradeSet() {
             const gradeSet = document.querySelector('.gradeSet').cloneNode(true);
+            gradeSet.querySelector('.schoolDropdown').value = '';
+            gradeSet.querySelector('.gradeDropdown').innerHTML = '';
+            gradeSet.querySelector('.boysInput').value = '';
+            gradeSet.querySelector('.girlsInput').value = '';
+            gradeSet.querySelector('.anyInput').value = '';
             document.getElementById('gradesContainer').appendChild(gradeSet);
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateSchools();
+        });
     </script>
     <style>
         /* General styling */
@@ -201,11 +205,10 @@
             color: #333;
         }
 
-        h2 {
+        h2, h3, h4 {
             background-color: #2C3E50;
             color: #ECF0F1;
             padding: 10px;
-            text-align: center;
             border-radius: 5px;
             margin-top: 20px;
         }
@@ -241,19 +244,20 @@
             align-items: center;
             margin-bottom: 10px;
             justify-content: center;
-            gap: 15px;  /* This creates space between the elements inside the gradeSet */
+            gap: 15px;
             width: 100%;
-            max-width: 500px; /* Control the maximum width of the gradeSet */
+            max-width: 800px;
         }
 
-        .gradeDropdown, .boysDropdown, .girlsDropdown {
+        .schoolDropdown, .gradeDropdown, .boysInput, .girlsInput, .anyInput {
             padding: 10px;
             border: 1px solid #BDC3C7;
             border-radius: 5px;
             background-color: #fff;
         }
+
         .gradeDropdown {
-            margin-left: 0; /* So the first dropdown doesn't have extra spacing on the left */
+            margin-left: 0;
         }
 
         /* List styling */
@@ -293,8 +297,6 @@
             }
         }
     </style>
-
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Supplies List</title>
@@ -305,41 +307,31 @@
     <h2>Enter Details</h2>
     <div id="gradesContainer">
         <div class="gradeSet">
+            <select class="schoolDropdown" onchange="populateGrades(this)">
+                <option value="">Select School</option>
+                <!-- Schools will be populated dynamically -->
+            </select>
             <select class="gradeDropdown">
-                <option value="Pre-Kindergarten">Pre-Kindergarten</option>
-                <option value="Kindergarten">Kindergarten</option>
-                <option value="First Grade">First Grade</option>
-                <option value="Second Grade">Second Grade</option>
-                <!-- Add other grades here -->
+                <option value="">Select Grade</option>
+                <!-- Grades will be populated dynamically -->
             </select>
-            Boys: 
-            <select class="boysDropdown">
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <!-- ... and so on -->
-            </select>
-            Girls: 
-            <select class="girlsDropdown">
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <!-- ... and so on -->
-            </select>
+            Boys:
+            <input type="number" class="boysInput" min="0" value="0">
+            Girls:
+            <input type="number" class="girlsInput" min="0" value="0">
+            Any:
+            <input type="number" class="anyInput" min="0" value="0">
         </div>
     </div>
-<div class=buttonContainer>
-    <button onclick="addGradeSet()">+ Add Another Grade</button>
-    <button onclick="generateList()">Submit</button>
-</div>
+    <div class="buttonContainer">
+        <button onclick="addGradeSet()">+ Add Another Grade</button>
+        <button onclick="generateList()">Submit</button>
+    </div>
     <h2>Combined Shopping List</h2>
     <ul id="combinedList"></ul>
 
     <h2>Individual List</h2>
     <div id="separateLists"></div>
-
 
 </body>
 
