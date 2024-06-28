@@ -714,7 +714,7 @@
                     instanceCount[school] = {};
                 }
 
-                ['Boys', 'Girls', 'Any'].forEach(gender => {
+                ['Boys', 'Girls', 'Other'].forEach(gender => {
                     const genderCount = gender === 'Boys' ? boysCount : gender === 'Girls' ? girlsCount : anyCount;
 
                     if (genderCount !== 0) {
@@ -743,7 +743,7 @@
                             const supplyItem = supplyList[itemKey];
                             const item = data.Items[supplyItem.Item || itemKey];
 
-                            if (!supplyItem.Sex || supplyItem.Sex === gender || gender === 'Any') {
+                            if (!supplyItem.Sex || supplyItem.Sex === gender || gender === 'Other') {
                                 const separateItem = {
                                     text: item.Name,
                                     unit: item.Unit,
@@ -767,7 +767,7 @@
                                         unit: item.Unit,
                                         quantity: supplyItem.Total * genderCount,
                                         countPerUnit: item.Count,
-                                        note: supplyItem.Note || ""
+                                        note: `${supplyItem.Sex ? supplyItem.Sex + "/Other " : ""}${supplyItem.Note || ""}`
                                     };
                                 }
                             }
@@ -779,7 +779,7 @@
             for (let key in combinedItems) {
                 const listItem = document.createElement("li");
                 const unit = combinedItems[key].unit.length > 0 && combinedItems[key].unit[0] ? (combinedItems[key].quantity > 1 ? combinedItems[key].unit[1] : combinedItems[key].unit[0]) : "";
-                const note = combinedItems[key].note ? ` - ${combinedItems[key].note}` : "";
+                const note = combinedItems[key].note ? `- ${combinedItems[key].note}` : "";
                 const perUnit = combinedItems[key].countPerUnit > 1 && unit ? `(${combinedItems[key].countPerUnit} per ${combinedItems[key].unit[0]})` : "";
                 listItem.innerHTML = `<input type="checkbox"> ${combinedItems[key].quantity} ${unit ? unit + " of" : ""} ${combinedItems[key].text} ${perUnit}${note}`;
                 combinedList.appendChild(listItem);
@@ -944,7 +944,7 @@
         .linksContainer a {
             text-decoration: none;
             color: #2980B9;
-            font-weight: bold;d
+            font-weight: bold;
             padding: 10px 15px;
             border: 2px solid #2980B9;
             border-radius: 5px;
@@ -968,6 +968,9 @@
         <a href="https://www.grisd.net/o/gri/page/school-supplies-list" target="_blank">Intermediate</a>
         <a href="https://core-docs.s3.us-east-1.amazonaws.com/documents/asset/uploaded_file/4703/GRJHS/4464592/24-25_GRJH_Supply_List.pdf" target="_blank">Junior High</a>
     </div>
+    <div class="linksContainer">
+        Enter multiple School, Grades/Classes and the number of each list you want counted to get a unified supplies list. (Other/NA shows all items)
+    </div>
     <div id="gradesContainer">
         <div class="gradeSet">
             <select class="schoolDropdown" onchange="populateGrades(this)">
@@ -982,7 +985,7 @@
             <input type="number" class="boysInput" min="0" value="0">
             Girls:
             <input type="number" class="girlsInput" min="0" value="0">
-            Any:
+            Other/NA:
             <input type="number" class="anyInput" min="0" value="0">
         </div>
     </div>
