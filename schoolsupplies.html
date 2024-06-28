@@ -6,107 +6,658 @@
         // Example JSON data
         const data = {
             "Items": {
-                "Scissors": {
+                "Scissors_5inch": {
                     "Name": "5-inch pointed scissors",
                     "Unit": [],
                     "Count": 1
                 },
-                "Crayons_24": {
+                "Scissors_Blunt": {
+                    "Name": "Blunt tip scissors",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Crayola_Crayons_12": {
+                    "Name": "12-Pack Crayola Crayons",
+                    "Unit": ["Pack", "Packs"],
+                    "Count": 12
+                },
+                "Crayola_Crayons_24": {
                     "Name": "24-Pack Crayola Crayons",
                     "Unit": ["Pack", "Packs"],
                     "Count": 24
                 },
-                "Plastic_Folders": {
-                    "Name": "Plastic Folders",
-                    "Unit": ["", ""],
-                    "Count": 1
-                },
-                "Wide_Ruled_Notebook_Paper": {
-                    "Name": "Wide Ruled Notebook Paper",
+                "Crayola_Crayons_8": {
+                    "Name": "8-Pack Crayola Crayons",
                     "Unit": ["Pack", "Packs"],
-                    "Count": 70
+                    "Count": 8
                 },
-                "Pink_Baloons": {
-                    "Name": "Pink Baloons",
+                "Elmers_Glue_4oz": {
+                    "Name": "Elmer's Glue",
+                    "Unit": ["Bottle", "Bottles"],
+                    "Count": 4
+                },
+                "Crayola_Markers": {
+                    "Name": "Crayola Markers",
                     "Unit": ["Box", "Boxes"],
-                    "Count": 6,
-                    "Sex": "Girls"
+                    "Count": 1
                 },
                 "Glue_Sticks": {
                     "Name": "Glue Sticks",
-                    "Unit": ["", ""],
+                    "Unit": [],
                     "Count": 1
                 },
-                "Markers": {
-                    "Name": "Markers",
-                    "Unit": ["Pack", "Packs"],
-                    "Count": 10
+                "Pink_Erasers": {
+                    "Name": "Pink Erasers",
+                    "Unit": [],
+                    "Count": 1
                 },
-                "Erasers": {
-                    "Name": "Erasers",
-                    "Unit": ["", ""],
+                "Plastic_School_Box": {
+                    "Name": "Small Plastic School Box",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Kleenex_Tissues": {
+                    "Name": "Box of Kleenex Tissues",
+                    "Unit": ["Box", "Boxes"],
+                    "Count": 1
+                },
+                "Child_Headphones": {
+                    "Name": "Child size headphones",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Backpack": {
+                    "Name": "Large Backpack",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Beach_Towel": {
+                    "Name": "Beach Towel",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Baby_Wipes": {
+                    "Name": "Package of Baby Wipes",
+                    "Unit": ["Package", "Packages"],
+                    "Count": 1
+                },
+                "Gallon_Storage_Bags": {
+                    "Name": "Gallon Storage Bags",
+                    "Unit": ["Box", "Boxes"],
+                    "Count": 1
+                },
+                "Sandwich_Storage_Bags": {
+                    "Name": "Sandwich Storage Bags",
+                    "Unit": ["Box", "Boxes"],
+                    "Count": 1
+                },
+                "Ticonderoga_Pencils": {
+                    "Name": "Ticonderoga Pencils",
+                    "Unit": ["Package", "Packages"],
+                    "Count": 12
+                },
+                "Plastic_Folders": {
+                    "Name": "Plastic Pocket Folders with brads",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Primary_Composition_Notebook": {
+                    "Name": "Primary Composition Notebook",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Crayola_Watercolor_Paint": {
+                    "Name": "Crayola Watercolor Paint",
+                    "Unit": ["Pallet", "Pallets"],
+                    "Count": 1
+                },
+                "Expo_Markers_Fine_Tip": {
+                    "Name": "Fine Tip Expo Markers",
+                    "Unit": ["Package", "Packages"],
+                    "Count": 1
+                },
+                "Paper_Plates_Small": {
+                    "Name": "Small Plain Paper Plates",
+                    "Unit": ["Package", "Packages"],
+                    "Count": 1
+                },
+                "Wide_Ruled_Spiral_Notebook": {
+                    "Name": "Wide Ruled Spiral Notebook",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Composition_Notebook": {
+                    "Name": "Composition Notebook",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Fine_Point_Sharpie": {
+                    "Name": "Fine Point Black Sharpie",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Hi_Liter_Yellow": {
+                    "Name": "Yellow Hi-Liter",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Binders_1inch": {
+                    "Name": "1-inch Binders",
+                    "Unit": ["Binder", "Binders"],
+                    "Count": 1
+                },
+                "Dry_Erase_Markers_Black": {
+                    "Name": "Dry Erase Markers, Black",
+                    "Unit": ["Marker", "Markers"],
+                    "Count": 2
+                },
+                "Dry_Erase_Markers_Fine_Tip": {
+                    "Name": "Dry erase markers FINE TIP",
+                    "Unit": ["Package", "Packages"],
+                    "Count": 2,
+                },
+                "Colored_Pencils_12": {
+                    "Name": "12-count colored pencils",
+                    "Unit": ["Box", "Boxes"],
+                    "Count": 12
+                },
+                "Wide_Ruled_Composition_Notebooks": {
+                    "Name": "Wide-ruled 100-page composition notebooks",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Wide_Ruled_Loose_Leaf": {
+                    "Name": "Wide-ruled notebook paper",
+                    "Unit": ["Package", "Packages"],
+                    "Count": 1
+                },
+                "Pencil_Bag": {
+                    "Name": "Large-size pencil bag",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Earbuds_Headphones": {
+                    "Name": "Ear Buds/Head Phones (C/USB adapter)",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Handheld_Sharpener": {
+                    "Name": "Handheld pencil sharpener",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Paper_Towels": {
+                    "Name": "Roll of paper towels",
+                    "Unit": ["Roll", "Rolls"],
+                    "Count": 1
+                },
+                "Post_It_Notes": {
+                    "Name": "Package of Post-It Notes",
+                    "Unit": ["Package", "Packages"],
+                    "Count": 1
+                },
+                "Quart_Storage_Bags": {
+                    "Name": "Quart Storage Bags",
+                    "Unit": ["Box", "Boxes"],
+                    "Count": 1
+                },
+                "Resealable_Bags_Quart": {
+                    "Name": "Box of quart resealable bags",
+                    "Unit": ["Box", "Boxes"],
+                    "Count": 1
+                },
+                "Highlighters": {
+                    "Name": "Highlighters",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Elmers_Glue_Large": {
+                    "Name": "Large Elmer's Glue Sticks",
+                    "Unit": [],
                     "Count": 1
                 }
             },
             "SchoolSupplies": {
-                "TEST ISD Elementary": {
-                    "4th Grade Supply List 2024-2025": {
-                        "Wide_Ruled_Notebook_Paper": {
+                "Glen Rose ISD - Elementary": {
+                    "Pre-Kindergarten Supply List 2024-2025": {
+                        "Crayola_Crayons_12": {
+                            "Total": 2
+                        },
+                        "Elmers_Glue_4oz": {
+                            "Total": 1
+                        },
+                        "Crayola_Markers": {
+                            "Total": 1,
+                            "Note": "(broadline, washable, classic colors)"
+                        },
+                        "Scissors_Blunt": {
+                            "Total": 1,
+                            "Note": "(Fiskar Brand)"
+                        },
+                        "Glue_Sticks": {
+                            "Total": 4
+                        },
+                        "Plastic_School_Box": {
+                            "Total": 1
+                        },
+                        "Kleenex_Tissues": {
+                            "Total": 1
+                        },
+                        "Child_Headphones": {
+                            "Total": 1,
+                            "Note": "(no earbuds, no bluetooth with straight jack not L-shaped)"
+                        },
+                        "Backpack": {
+                            "Total": 1,
+                            "Note": "(to hold folders) No Wheels"
+                        },
+                        "Beach_Towel": {
+                            "Total": 1,
+                            "Note": "(for rest time at beginning of year)"
+                        },
+                        "Baby_Wipes": {
+                            "Total": 1
+                        },
+                        "Gallon_Storage_Bags": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        },
+                        "Sandwich_Storage_Bags": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        }
+                    },
+                    "Kindergarten Supply List 2024-2025": {
+                        "Ticonderoga_Pencils": {
+                            "Total": 12
+                        },
+                        "Plastic_Folders": {
+                            "Total": 4,
+                            "Note": "2 red, 2 yellow"
+                        },
+                        "Primary_Composition_Notebook": {
+                            "Total": 1,
+                            "Note": "(black, ½ page is ruled, top blank to draw)"
+                        },
+                        "Crayola_Markers": {
+                            "Total": 1,
+                            "Note": "(broadline, washable, classic)"
+                        },
+                        "Pink_Erasers": {
+                            "Total": 4
+                        },
+                        "Crayola_Crayons_24": {
+                            "Total": 3
+                        },
+                        "Crayola_Crayons_8": {
+                            "Total": 3,
+                            "Note": "(Not Large)"
+                        },
+                        "Elmers_Glue_Large": {
+                            "Total": 10
+                        },
+                        "Elmers_Glue_4oz": {
+                            "Total": 2
+                        },
+                        "Crayola_Watercolor_Paint": {
+                            "Total": 1,
+                            "Note": "(with brush, 8 colors)"
+                        },
+                        "Scissors_Blunt": {
+                            "Total": 1,
+                            "Note": "(Fiskar Brand, 5\" blunt tip)"
+                        },
+                        "Expo_Markers_Fine_Tip": {
+                            "Total": 1,
+                            "Note": "(black)"
+                        },
+                        "Child_Headphones": {
+                            "Total": 1,
+                            "Note": "(no earbuds, no bluetooth with straight jack not L-shaped)"
+                        },
+                        "Backpack": {
+                            "Total": 1,
+                            "Note": "No Wheels"
+                        },
+                        "Kleenex_Tissues": {
+                            "Total": 2
+                        },
+                        "Quart_Storage_Bags": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        },
+                        "Baby_Wipes": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        },
+                        "Gallon_Storage_Bags": {
                             "Total": 1,
                             "Sex": "Boys"
+                        },
+                        "Paper_Plates_Small": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        }
+                    },
+                    "First Grade Supply List 2024-2025": {
+                        "Wide_Ruled_Spiral_Notebook": {
+                            "Total": 1
+                        },
+                        "Composition_Notebook": {
+                            "Total": 1,
+                            "Note": "(black)"
+                        },
+                        "Plastic_Folders": {
+                            "Total": 2,
+                            "Note": "1 red, 1 green"
+                        },
+                        "Crayola_Watercolor_Paint": {
+                            "Total": 3,
+                            "Note": "(with brush, 8 colors)"
+                        },
+                        "Crayola_Crayons_24": {
+                            "Total": 3
+                        },
+                        "Crayola_Markers": {
+                            "Total": 2,
+                            "Note": "(10 count, washable, and primary colors)"
+                        },
+                        "Ticonderoga_Pencils": {
+                            "Total": 1,
+                            "Note": "(12 count)"
+                        },
+                        "Fine_Point_Sharpie": {
+                            "Total": 1,
+                            "Note": "(black)"
+                        },
+                        "Pink_Erasers": {
+                            "Total": 1
+                        },
+                        "Elmers_Glue_Large": {
+                            "Total": 12
+                        },
+                        "Scissors_Blunt": {
+                            "Total": 1,
+                            "Note": "(Fiskar Brand, 5\" Blunt Tip)"
+                        },
+                        "Plastic_School_Box": {
+                            "Total": 1
+                        },
+                        "Kleenex_Tissues": {
+                            "Total": 2
+                        },
+                        "Baby_Wipes": {
+                            "Total": 1
+                        },
+                        "Child_Headphones": {
+                            "Total": 1,
+                            "Note": "(no earbuds, no bluetooth with straight jack not L-shaped)"
+                        },
+                        "Gallon_Storage_Bags": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        },
+                        "Quart_Storage_Bags": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        },
+                        "Backpack": {
+                            "Total": 1,
+                            "Note": "No Wheels"
+                        }
+                    },
+                    "Second Grade Supply List 2024-2025": {
+                        "Wide_Ruled_Spiral_Notebook": {
+                            "Total": 2,
+                            "Note": "(70 pages each, red, green)"
+                        },
+                        "Wide_Ruled_Composition_Notebooks": {
+                            "Total": 1,
+                            "Note": "(100 sheet)"
+                        },
+                        "Plastic_Folders": {
+                            "Total": 2,
+                            "Note": "1 red, 1 yellow"
+                        },
+                        "Binders_1inch": {
+                            "Total": 1,
+                            "Note": "(black)"
+                        },
+                        "Crayola_Crayons_24": {
+                            "Total": 3
+                        },
+                        "Colored_Pencils_12": {
+                            "Total": 3,
+                            "Note": "(Crayola)"
+                        },
+                        "Crayola_Markers": {
+                            "Total": 2,
+                            "Note": "(8 count, wide point)"
+                        },
+                        "Dry_Erase_Markers_Black": {
+                            "Total": 2
+                        },
+                        "Ticonderoga_Pencils": {
+                            "Total": 2,
+                            "Note": "(12 count)"
+                        },
+                        "Hi_Liter_Yellow": {
+                            "Total": 1
+                        },
+                        "Pink_Erasers": {
+                            "Total": 2,
+                            "Note": "(Large)"
+                        },
+                        "Elmers_Glue_4oz": {
+                            "Total": 1
+                        },
+                        "Elmers_Glue_Large": {
+                            "Total": 12
+                        },
+                        "Scissors_5inch": {
+                            "Total": 1,
+                            "Note": "(Fiskar Brand, 5'' pointed)"
+                        },
+                        "Plastic_School_Box": {
+                            "Total": 1
+                        },
+                        "Child_Headphones": {
+                            "Total": 1,
+                            "Note": "(no earbuds, no bluetooth with straight jack not L-shaped)"
+                        },
+                        "Kleenex_Tissues": {
+                            "Total": 2
+                        },
+                        "Gallon_Storage_Bags": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        },
+                        "Quart_Storage_Bags": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        },
+                        "Backpack": {
+                            "Total": 1,
+                            "Note": "No Wheels"
+                        }
+                    }
+                },
+                "Glen Rose ISD - Intermediate": {
+                    "3rd Grade Supply List 2024-2025": {
+                        "Scissors_5inch": {
+                            "Total": 1,
+                            "Note": "(Fiskar Brand)"
+                        },
+                        "Crayola_Crayons_24": {
+                            "Total": 1
+                        },
+                        "Pink_Erasers": {
+                            "Total": 2
+                        },
+                        "Colored_Pencils_12": {
+                            "Total": 2
+                        },
+                        "Plastic_Folders": {
+                            "Total": 4,
+                            "Note": "1 blue, 1 green, 1 purple, 1 red"
+                        },
+                        "Wide_Ruled_Composition_Notebooks": {
+                            "Total": 4
+                        },
+                        "Wide_Ruled_Spiral_Notebook": {
+                            "Total": 3
+                        },
+                        "Wide_Ruled_Loose_Leaf": {
+                            "Total": 2
+                        },
+                        "Pencil_Bag": {
+                            "Total": 1,
+                            "Note": "(not a box)"
+                        },
+                        "Kleenex_Tissues": {
+                            "Total": 3
+                        },
+                        "Glue_Sticks": {
+                            "Total": 12
+                        },
+                        "Ticonderoga_Pencils": {
+                            "Total": 48
+                        },
+                        "Earbuds_Headphones": {
+                            "Total": 1,
+                            "Note": "(MUST have daily, used in class, NO Bluetooth)"
+                        },
+                        "Crayola_Markers": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        },
+                        "Handheld_Sharpener": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        }
+                    },
+                    "4th Grade Supply List 2024-2025": {
+                        "Wide_Ruled_Loose_Leaf": {
+                            "Total": 1
                         },
                         "Plastic_Folders": {
                             "Total": 3,
                             "Note": "1 red, 1 blue, 1 yellow"
                         },
-                        "Scissors_Boys": {
-                            "Item": "Scissors",
-                            "Total": 1,
-                            "Note": "(Hiskar Brand)",
-                            "Sex": "Boys"
+                        "Ticonderoga_Pencils": {
+                            "Total": 72,
+                            "Note": "NO mechanical pencils"
                         },
-                        "Scissors_Girls": {
-                            "Item": "Scissors",
-                            "Total": 1,
-                            "Note": "(Misskar Brand)",
-                            "Sex": "Girls"
+                        "Colored_Pencils_12": {
+                            "Total": 1
                         },
-                        "Crayons_24": {
-                            "Total": 2
+                        "Dry_Erase_Markers_Fine_Tip": {
+                            "Total": 1,
+                            "Note": "(fine tip, preferably black)"
                         },
                         "Glue_Sticks": {
-                            "Total": 5
+                            "Total": 12
                         },
-                        "Markers": {
+                        "Elmers_Glue_4oz": {
                             "Total": 2
+                        },
+                        "Crayola_Markers": {
+                            "Total": 1
+                        },
+                        "Kleenex_Tissues": {
+                            "Total": 3
+                        },
+                        "Pink_Erasers": {
+                            "Total": 1
+                        },
+                        "Wide_Ruled_Composition_Notebooks": {
+                            "Total": 4,
+                            "Note": "(NO plastic covers)"
+                        },
+                        "Pencil_Bag": {
+                            "Total": 1,
+                            "Note": "(not a pencil box)"
+                        },
+                        "Earbuds_Headphones": {
+                            "Total": 1,
+                            "Note": "(MUST have daily, used in class, NO Bluetooth)"
+                        },
+                        "Post_It_Notes": {
+                            "Total": 2,
+                            "Sex": "Girls"
+                        },
+                        "Paper_Towels": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        },
+                        "Pink_Erasers": {
+                            "Total": 1,
+                            "Sex": "Girls",
+                            "Note": "(For Art Class)"
+                        },
+                        "Glue_Sticks": {
+                            "Total": 1,
+                            "Sex": "Boys",
+                            "Note": "(For Art Class)"
                         }
                     },
-                    "2nd Grade Supply List 2024-2025": {
-                        "Wide_Ruled_Notebook_Paper": {
+                    "5th Grade Supply List 2024-2025": {
+                        "Earbuds_Headphones": {
+                            "Total": 1,
+                            "Note": "(C/USB adapter)"
+                        },
+                        "Colored_Pencils_12": {
+                            "Total": 2,
+                            "Note": "(Twistables or Crayola recommended)"
+                        },
+                        "Scissors_5inch": {
                             "Total": 1
                         },
                         "Plastic_Folders": {
-                            "Total": 2,
-                            "Note": "1 green, 1 purple"
+                            "Total": 4,
+                            "Note": "1 red, 1 green, 1 blue, 1 yellow"
                         },
-                        "Scissors": {
-                            "Total": 1
+                        "Wide_Ruled_Composition_Notebooks": {
+                            "Total": 5,
+                            "Note": "(100 pages each)"
                         },
-                        "Crayons_24": {
-                            "Total": 1
-                        },
-                        "Glue_Sticks": {
+                        "Kleenex_Tissues": {
                             "Total": 3
                         },
-                        "Erasers": {
+                        "Highlighters": {
                             "Total": 2
+                        },
+                        "Ticonderoga_Pencils": {
+                            "Total": 60
+                        },
+                        "Glue_Sticks": {
+                            "Total": 24,
+                            "Note": "(not liquid glue)"
+                        },
+                        "Resealable_Bags_Quart": {
+                            "Total": 1
+                        },
+                        "Post_It_Notes": {
+                            "Total": 1
+                        },
+                        "Pencil_Bag": {
+                            "Total": 1,
+                            "Note": "(8x10 nylon carry-all)"
+                        },
+                        "Crayola_Crayons_24": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        },
+                        "Elmers_Glue_4oz": {
+                            "Total": 1,
+                            "Sex": "Boys"
                         }
                     }
                 }
             }
         };
 
-        const schoolSupplies = data.SchoolSupplies;
+        const schoolSupplies = data.SchoolSupplies || {};
 
         function populateSchools() {
             const schoolDropdown = document.querySelector(".schoolDropdown");
@@ -122,7 +673,7 @@
         function populateGrades(schoolDropdown) {
             const selectedSchool = schoolDropdown.value;
             const gradeDropdown = schoolDropdown.closest('.gradeSet').querySelector('.gradeDropdown');
-            gradeDropdown.innerHTML = '<option value="">Select Grade</option>';
+            gradeDropdown.innerHTML = '<option value="">Select Grade/Class</option>';
 
             if (selectedSchool) {
                 for (let grade in schoolSupplies[selectedSchool]) {
@@ -266,15 +817,20 @@
         function addGradeSet() {
             const gradeSet = document.querySelector('.gradeSet').cloneNode(true);
             gradeSet.querySelector('.schoolDropdown').value = '';
-            gradeSet.querySelector('.gradeDropdown').innerHTML = '<option value="">Select Grade</option>';
-            gradeSet.querySelector('.boysInput').value = '';
-            gradeSet.querySelector('.girlsInput').value = '';
-            gradeSet.querySelector('.anyInput').value = '';
+            gradeSet.querySelector('.gradeDropdown').innerHTML = '<option value="">Select Grade/Class</option>';
+            gradeSet.querySelector('.boysInput').value = '0';
+            gradeSet.querySelector('.girlsInput').value = '0';
+            gradeSet.querySelector('.anyInput').value = '0';
             document.getElementById('gradesContainer').appendChild(gradeSet);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             populateSchools();
+
+            // Set initial values to 0
+            document.querySelectorAll('.boysInput, .girlsInput, .anyInput').forEach(input => {
+                input.value = '0';
+            });
         });
     </script>
     <style>
@@ -394,7 +950,7 @@
                 <!-- Schools will be populated dynamically -->
             </select>
             <select class="gradeDropdown">
-                <option value="">Select Grade</option>
+                <option value="">Select Grade/Class</option>
                 <!-- Grades will be populated dynamically -->
             </select>
             Boys:
@@ -406,7 +962,7 @@
         </div>
     </div>
     <div class="buttonContainer">
-        <button onclick="addGradeSet()">+ Add Another Grade</button>
+        <button onclick="addGradeSet()">+ Add Another Grade/Class</button>
         <button onclick="generateList()">Submit</button>
     </div>
     <h2>Combined Shopping List</h2>
