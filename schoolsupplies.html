@@ -122,7 +122,7 @@
         function populateGrades(schoolDropdown) {
             const selectedSchool = schoolDropdown.value;
             const gradeDropdown = schoolDropdown.closest('.gradeSet').querySelector('.gradeDropdown');
-            gradeDropdown.innerHTML = '';
+            gradeDropdown.innerHTML = '<option value="">Select Grade</option>';
 
             if (selectedSchool) {
                 for (let grade in schoolSupplies[selectedSchool]) {
@@ -144,6 +144,7 @@
 
             let combinedItems = {};
             let separateItems = {};
+            let instanceCount = {};
 
             gradeSets.forEach((gradeSet) => {
                 const schoolDropdown = gradeSet.querySelector(".schoolDropdown");
@@ -158,14 +159,27 @@
                 const girlsCount = parseInt(girlsInput.value, 10) || 0;
                 const anyCount = parseInt(anyInput.value, 10) || 0;
 
-                if (!separateItems[school]) {
-                    separateItems[school] = {};
+                if (!instanceCount[school]) {
+                    instanceCount[school] = {};
                 }
 
                 ['Boys', 'Girls', 'Any'].forEach(gender => {
                     const genderCount = gender === 'Boys' ? boysCount : gender === 'Girls' ? girlsCount : anyCount;
 
                     if (genderCount !== 0) {
+                        if (!instanceCount[school][grade]) {
+                            instanceCount[school][grade] = {};
+                        }
+                        if (!instanceCount[school][grade][gender]) {
+                            instanceCount[school][grade][gender] = 0;
+                        }
+
+                        instanceCount[school][grade][gender] += genderCount;
+
+                        if (!separateItems[school]) {
+                            separateItems[school] = {};
+                        }
+
                         if (!separateItems[school][grade]) {
                             separateItems[school][grade] = {};
                         }
@@ -228,7 +242,8 @@
                 for (let grade in separateItems[school]) {
                     for (let gender in separateItems[school][grade]) {
                         const genderHeading = document.createElement("h4");
-                        genderHeading.innerText = `${grade} ${gender}`;
+                        const instanceText = instanceCount[school][grade][gender] > 1 ? ` - x${instanceCount[school][grade][gender]}` : "";
+                        genderHeading.innerText = `${grade} ${gender}${instanceText}`;
                         separateLists.appendChild(genderHeading);
 
                         const separateList = document.createElement("ul");
@@ -251,7 +266,7 @@
         function addGradeSet() {
             const gradeSet = document.querySelector('.gradeSet').cloneNode(true);
             gradeSet.querySelector('.schoolDropdown').value = '';
-            gradeSet.querySelector('.gradeDropdown').innerHTML = '';
+            gradeSet.querySelector('.gradeDropdown').innerHTML = '<option value="">Select Grade</option>';
             gradeSet.querySelector('.boysInput').value = '';
             gradeSet.querySelector('.girlsInput').value = '';
             gradeSet.querySelector('.anyInput').value = '';
