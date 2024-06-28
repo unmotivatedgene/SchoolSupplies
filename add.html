@@ -98,6 +98,10 @@
         .hidden {
             display: none;
         }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -138,15 +142,17 @@
                 <option value="">Choose an item</option>
             </select>
         </div>
-        <div class="form-group">
-            <label for="itemName">Item Name</label>
-            <input type="text" id="itemName" placeholder="Enter item name">
-        </div>
         <div class="form-group inline">
+            <div class="form-group">
+                <label for="itemName">Item Name</label>
+                <input type="text" id="itemName" placeholder="Enter item name">
+            </div>
             <div class="form-group">
                 <label for="itemTotal">Total</label>
                 <input type="number" id="itemTotal" placeholder="Enter total number of items">
             </div>
+        </div>
+        <div class="form-group inline">
             <div class="form-group">
                 <label for="itemUnitSingular">Unit Singular</label>
                 <input type="text" id="itemUnitSingular" placeholder="Enter unit singular (e.g., Box)">
@@ -155,11 +161,15 @@
                 <label for="itemUnitPlural">Unit Plural</label>
                 <input type="text" id="itemUnitPlural" placeholder="Enter unit plural (e.g., Boxes)">
             </div>
+            <div class="form-group">
+                <label for="itemCountPerUnit">Count Per Unit</label>
+                <input type="number" id="itemCountPerUnit" placeholder="Enter count per unit (e.g., 24)">
+            </div>
         </div>
         <div class="form-group inline">
             <div class="form-group">
                 <label for="itemNote">Note</label>
-                <input type="text" id="itemNote" placeholder="Enter any additional note">
+                <input type="text" id="itemNote" placeholder="Enter any additional note (e.g. Preferred Brand)">
             </div>
             <div class="form-group">
                 <label for="itemSex">Only for Boy/Girl/Any</label>
@@ -185,7 +195,7 @@
     <script>
         const existingItems = [
             { name: "5-inch pointed scissors (Fiskar Brand)", unit: ["Pair", "Pairs"] },
-            { name: "24-Pack Crayola Crayons", unit: ["Pack", "Packs"] },
+            { name: "24-Pack Crayola Crayons", unit: ["Pack", "Packs"], count: 24 },
             { name: "Large pink flat erasers", unit: ["Eraser", "Erasers"] },
             { name: "12-count colored pencils", unit: ["Box", "Boxes"] },
             // Add more items as needed
@@ -225,10 +235,12 @@
                 document.getElementById('itemName').value = item.name;
                 document.getElementById('itemUnitSingular').value = item.unit[0];
                 document.getElementById('itemUnitPlural').value = item.unit[1];
+                document.getElementById('itemCountPerUnit').value = item.count;
             } else {
                 document.getElementById('itemName').value = '';
                 document.getElementById('itemUnitSingular').value = '';
                 document.getElementById('itemUnitPlural').value = '';
+                document.getElementById('itemCountPerUnit').value = '';
             }
         }
 
@@ -239,10 +251,11 @@
             const itemTotal = document.getElementById('itemTotal').value;
             const itemUnitSingular = document.getElementById('itemUnitSingular').value;
             const itemUnitPlural = document.getElementById('itemUnitPlural').value;
+            const itemCountPerUnit = document.getElementById('itemCountPerUnit').value;
             const itemNote = document.getElementById('itemNote').value;
             const itemSex = document.getElementById('itemSex').value;
 
-            if (!schoolName || !grade || !itemName || !itemTotal || !itemUnitSingular || !itemUnitPlural) {
+            if (!schoolName || !grade || !itemName || !itemTotal || !itemUnitSingular || !itemUnitPlural || !itemCountPerUnit) {
                 alert('Please fill in all required fields');
                 return;
             }
@@ -250,7 +263,8 @@
             const item = {
                 Name: itemName,
                 Total: parseInt(itemTotal),
-                Unit: [itemUnitSingular, itemUnitPlural]
+                Unit: [itemUnitSingular, itemUnitPlural],
+                CountPerUnit: parseInt(itemCountPerUnit)
             };
             if (itemNote) item.Note = itemNote;
             if (itemSex) item.Sex = itemSex;
@@ -282,6 +296,7 @@
             document.getElementById('itemTotal').value = '';
             document.getElementById('itemUnitSingular').value = '';
             document.getElementById('itemUnitPlural').value = '';
+            document.getElementById('itemCountPerUnit').value = '';
             document.getElementById('itemNote').value = '';
             document.getElementById('itemSex').value = '';
             existingItemsSelect.value = '';
@@ -294,7 +309,7 @@
                     itemList[school][grade].forEach((item, index) => {
                         const li = document.createElement('li');
                         li.innerHTML = `
-                            ${school} - ${grade}: ${item.Total} ${item.Unit[item.Total > 1 ? 1 : 0]} of ${item.Name} ${item.Note ? `(Note: ${item.Note})` : ''} ${item.Sex ? `(Sex: ${item.Sex})` : ''}
+                            ${school} - ${grade}: ${item.Total} ${item.Unit[item.Total > 1 ? 1 : 0]} of ${item.Name} (${item.CountPerUnit} per unit) ${item.Note ? `(Note: ${item.Note})` : ''} ${item.Sex ? `(Sex: ${item.Sex})` : ''}
                             <button onclick="editItem('${school}', '${grade}', ${index})">Edit</button>
                             <button onclick="deleteItem('${school}', '${grade}', ${index})">Delete</button>
                         `;
@@ -307,11 +322,12 @@
         function editItem(school, grade, index) {
             const item = itemList[school][grade][index];
             document.getElementById('schoolName').value = school;
-            document.getElementById('gradeSelect').value = grade; // Fixed here
+            document.getElementById('gradeSelect').value = grade;
             document.getElementById('itemName').value = item.Name;
             document.getElementById('itemTotal').value = item.Total;
             document.getElementById('itemUnitSingular').value = item.Unit[0];
             document.getElementById('itemUnitPlural').value = item.Unit[1];
+            document.getElementById('itemCountPerUnit').value = item.CountPerUnit;
             document.getElementById('itemNote').value = item.Note || '';
             document.getElementById('itemSex').value = item.Sex || '';
             deleteItem(school, grade, index);
