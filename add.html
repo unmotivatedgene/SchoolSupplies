@@ -235,7 +235,7 @@
                 document.getElementById('itemName').value = item.name;
                 document.getElementById('itemUnitSingular').value = item.unit[0];
                 document.getElementById('itemUnitPlural').value = item.unit[1];
-                document.getElementById('itemCountPerUnit').value = item.count;
+                document.getElementById('itemCountPerUnit').value = item.count || 1;
             } else {
                 document.getElementById('itemName').value = '';
                 document.getElementById('itemUnitSingular').value = '';
