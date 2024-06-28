@@ -5,49 +5,103 @@
     <script>
         // Example JSON data
         const data = {
+            "Items": {
+                "Scissors": {
+                    "Name": "5-inch pointed scissors",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Crayons_24": {
+                    "Name": "24-Pack Crayola Crayons",
+                    "Unit": ["Pack", "Packs"],
+                    "Count": 24
+                },
+                "Plastic_Folders": {
+                    "Name": "Plastic Folders",
+                    "Unit": ["", ""],
+                    "Count": 1
+                },
+                "Wide_Ruled_Notebook_Paper": {
+                    "Name": "Wide Ruled Notebook Paper",
+                    "Unit": ["Pack", "Packs"],
+                    "Count": 70
+                },
+                "Pink_Baloons": {
+                    "Name": "Pink Baloons",
+                    "Unit": ["Box", "Boxes"],
+                    "Count": 6,
+                    "Sex": "Girls"
+                },
+                "Glue_Sticks": {
+                    "Name": "Glue Sticks",
+                    "Unit": ["", ""],
+                    "Count": 1
+                },
+                "Markers": {
+                    "Name": "Markers",
+                    "Unit": ["Pack", "Packs"],
+                    "Count": 10
+                },
+                "Erasers": {
+                    "Name": "Erasers",
+                    "Unit": ["", ""],
+                    "Count": 1
+                }
+            },
             "SchoolSupplies": {
-                "GRISD Elementary": {
-                    "2nd Grade": [
-                        {
-                            "Name": "5-inch pointed scissors (Fiskar Brand)",
-                            "Total": 2,
-                            "Unit": [
-                                "Pair",
-                                "Pairs"
-                            ],
-                            "CountPerUnit": 1
-                        },
-                        {
-                            "Name": "24-Pack Crayola Crayons",
+                "TEST ISD Elementary": {
+                    "4th Grade Supply List 2024-2025": {
+                        "Wide_Ruled_Notebook_Paper": {
                             "Total": 1,
-                            "Unit": [
-                                "Pack",
-                                "Packs"
-                            ],
-                            "CountPerUnit": 24,
-                            "Note": "Crayola Brand"
-                        },
-                        {
-                            "Name": "Green Baloons",
-                            "Total": 2,
-                            "Unit": [
-                                "Box",
-                                "Boxes"
-                            ],
-                            "CountPerUnit": 6,
                             "Sex": "Boys"
                         },
-                        {
-                            "Name": "Pink Baloons",
-                            "Total": 2,
-                            "Unit": [
-                                "Box",
-                                "Boxes"
-                            ],
-                            "CountPerUnit": 6,
+                        "Plastic_Folders": {
+                            "Total": 3,
+                            "Note": "1 red, 1 blue, 1 yellow"
+                        },
+                        "Scissors_Boys": {
+                            "Item": "Scissors",
+                            "Total": 1,
+                            "Note": "(Hiskar Brand)",
+                            "Sex": "Boys"
+                        },
+                        "Scissors_Girls": {
+                            "Item": "Scissors",
+                            "Total": 1,
+                            "Note": "(Misskar Brand)",
                             "Sex": "Girls"
+                        },
+                        "Crayons_24": {
+                            "Total": 2
+                        },
+                        "Glue_Sticks": {
+                            "Total": 5
+                        },
+                        "Markers": {
+                            "Total": 2
                         }
-                    ]
+                    },
+                    "2nd Grade Supply List 2024-2025": {
+                        "Wide_Ruled_Notebook_Paper": {
+                            "Total": 1
+                        },
+                        "Plastic_Folders": {
+                            "Total": 2,
+                            "Note": "1 green, 1 purple"
+                        },
+                        "Scissors": {
+                            "Total": 1
+                        },
+                        "Crayons_24": {
+                            "Total": 1
+                        },
+                        "Glue_Sticks": {
+                            "Total": 3
+                        },
+                        "Erasers": {
+                            "Total": 2
+                        }
+                    }
                 }
             }
         };
@@ -119,39 +173,50 @@
                             separateItems[school][grade][gender] = [];
                         }
 
-                        schoolSupplies[school][grade].forEach(item => {
-                            if (!item.Sex || item.Sex === gender || gender === 'Any') {
-                                const itemKey = item.Name;
+                        const supplyList = schoolSupplies[school][grade];
+                        for (let itemKey in supplyList) {
+                            const supplyItem = supplyList[itemKey];
+                            const item = data.Items[supplyItem.Item || itemKey];
 
+                            if (!supplyItem.Sex || supplyItem.Sex === gender || gender === 'Any') {
                                 const separateItem = {
                                     text: item.Name,
                                     unit: item.Unit,
-                                    quantity: item.Total * genderCount,
-                                    countPerUnit: item.CountPerUnit
+                                    quantity: supplyItem.Total * genderCount,
+                                    countPerUnit: item.Count,
+                                    note: supplyItem.Note || ""
                                 };
 
                                 separateItems[school][grade][gender].push(separateItem);
 
                                 if (combinedItems[itemKey]) {
-                                    combinedItems[itemKey].quantity += item.Total * genderCount;
+                                    combinedItems[itemKey].quantity += supplyItem.Total * genderCount;
+                                    if (combinedItems[itemKey].note && supplyItem.Note) {
+                                        combinedItems[itemKey].note += `, ${supplyItem.Note}`;
+                                    } else if (supplyItem.Note) {
+                                        combinedItems[itemKey].note = supplyItem.Note;
+                                    }
                                 } else {
                                     combinedItems[itemKey] = {
                                         text: item.Name,
                                         unit: item.Unit,
-                                        quantity: item.Total * genderCount,
-                                        countPerUnit: item.CountPerUnit
+                                        quantity: supplyItem.Total * genderCount,
+                                        countPerUnit: item.Count,
+                                        note: supplyItem.Note || ""
                                     };
                                 }
                             }
-                        });
+                        }
                     }
                 });
             });
 
             for (let key in combinedItems) {
                 const listItem = document.createElement("li");
-                const unit = combinedItems[key].quantity > 1 ? combinedItems[key].unit[1] : combinedItems[key].unit[0];
-                listItem.innerHTML = `<input type="checkbox"> ${combinedItems[key].quantity} ${unit} of ${combinedItems[key].text} (${combinedItems[key].countPerUnit} per ${combinedItems[key].unit[0]})`;
+                const unit = combinedItems[key].unit.length > 0 && combinedItems[key].unit[0] ? (combinedItems[key].quantity > 1 ? combinedItems[key].unit[1] : combinedItems[key].unit[0]) : "";
+                const note = combinedItems[key].note ? ` - ${combinedItems[key].note}` : "";
+                const perUnit = combinedItems[key].countPerUnit > 1 && unit ? `(${combinedItems[key].countPerUnit} per ${combinedItems[key].unit[0]})` : "";
+                listItem.innerHTML = `<input type="checkbox"> ${combinedItems[key].quantity} ${unit ? unit + " of" : ""} ${combinedItems[key].text} ${perUnit}${note}`;
                 combinedList.appendChild(listItem);
             }
 
@@ -169,9 +234,11 @@
                         const separateList = document.createElement("ul");
 
                         separateItems[school][grade][gender].forEach(item => {
-                            const unit = item.quantity > 1 ? item.unit[1] : item.unit[0];
+                            const unit = item.unit.length > 0 && item.unit[0] ? (item.quantity > 1 ? item.unit[1] : item.unit[0]) : "";
+                            const note = item.note ? ` - ${item.note}` : "";
+                            const perUnit = item.countPerUnit > 1 && unit ? `(${item.countPerUnit} per ${item.unit[0]})` : "";
                             const listItem = document.createElement("li");
-                            listItem.innerHTML = `<input type="checkbox"> ${item.quantity} ${unit} of ${item.text} (${item.countPerUnit} per ${item.unit[0]})`;
+                            listItem.innerHTML = `<input type="checkbox"> ${item.quantity} ${unit ? unit + " of" : ""} ${item.text} ${perUnit}${note}`;
                             separateList.appendChild(listItem);
                         });
 
