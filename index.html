@@ -663,12 +663,20 @@
                 });
             });
 
-            for (let key in combinedItems) {
+            // Convert combinedItems to array of [key, value] pairs and sort by .text
+            const sortedItems = Object.entries(combinedItems).sort((a, b) => {
+                const textA = a[1].text.toLowerCase();
+                const textB = b[1].text.toLowerCase();
+                return textA.localeCompare(textB);
+            });
+
+            // Now loop through the sorted entries
+            for (let [key, value] of sortedItems) {
                 const listItem = document.createElement("li");
-                const unit = combinedItems[key].unit.length > 0 && combinedItems[key].unit[0] ? (combinedItems[key].quantity > 1 ? combinedItems[key].unit[1] : combinedItems[key].unit[0]) : "";
-                const note = combinedItems[key].note ? `- ${combinedItems[key].note}` : "";
-                const perUnit = combinedItems[key].countPerUnit > 1 && unit ? `(${combinedItems[key].countPerUnit} per ${combinedItems[key].unit[0]})` : "";
-                listItem.innerHTML = `<input type="checkbox"> ${combinedItems[key].quantity} ${unit ? unit + " of" : ""} ${combinedItems[key].text} ${perUnit}${note}`;
+                const unit = value.unit.length > 0 && value.unit[0] ? (value.quantity > 1 ? value.unit[1] : value.unit[0]) : "";
+                const note = value.note ? `- ${value.note}` : "";
+                const perUnit = value.countPerUnit > 1 && unit ? `(${value.countPerUnit} per ${value.unit[0]})` : "";
+                listItem.innerHTML = `<input type="checkbox"> ${value.quantity} ${unit ? unit + " of" : ""} ${value.text} ${perUnit}${note}`;
                 combinedList.appendChild(listItem);
             }
 
