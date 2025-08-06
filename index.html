@@ -676,7 +676,7 @@
                 const unit = value.unit.length > 0 && value.unit[0] ? (value.quantity > 1 ? value.unit[1] : value.unit[0]) : "";
                 const note = value.note ? `- ${value.note}` : "";
                 const perUnit = value.countPerUnit > 1 && unit ? `(${value.countPerUnit} per ${value.unit[0]})` : "";
-                listItem.innerHTML = `<input type="checkbox"> ${value.quantity} ${unit ? unit + " of" : ""} ${value.text} ${perUnit}${note}`;
+                listItem.innerHTML = `<input type="checkbox"> ${value.quantity} ${unit ? unit + " of" : ""} <strong>${value.text}</strong> ${perUnit}${note}`;
                 combinedList.appendChild(listItem);
             }
 
