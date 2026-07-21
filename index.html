@@ -1147,13 +1147,17 @@
             const gradeSets = document.querySelectorAll(".gradeSet");
             const combinedList = document.getElementById("combinedList");
             const separateLists = document.getElementById("separateLists");
+            const resultsCard = document.getElementById("resultsCard");
+            const individualTab = document.getElementById("individualTabButton");
+            const combinedPanelTitle = document.getElementById("combinedPanelTitle");
+            const combinedPanelDescription = document.getElementById("combinedPanelDescription");
 
             combinedList.innerHTML = '';
             separateLists.innerHTML = '';
 
             let combinedItems = {};
-            let separateItems = {};
-            let instanceCount = {};
+            let studentLists = [];
+            let totalStudents = 0;
 
             gradeSets.forEach((gradeSet) => {
                 const schoolDropdown = gradeSet.querySelector(".schoolDropdown");
@@ -1168,70 +1172,57 @@
                 const girlsCount = parseInt(girlsInput.value, 10) || 0;
                 const anyCount = parseInt(anyInput.value, 10) || 0;
 
-                if (!instanceCount[school]) {
-                    instanceCount[school] = {};
+                if (!school || !grade || !schoolSupplies[school]?.[grade]) {
+                    return;
                 }
 
                 ['Boys', 'Girls', 'Other'].forEach(gender => {
                     const genderCount = gender === 'Boys' ? boysCount : gender === 'Girls' ? girlsCount : anyCount;
 
-                    if (genderCount !== 0) {
-                        if (!instanceCount[school][grade]) {
-                            instanceCount[school][grade] = {};
-                        }
-                        if (!instanceCount[school][grade][gender]) {
-                            instanceCount[school][grade][gender] = 0;
-                        }
+                    if (genderCount <= 0) {
+                        return;
+                    }
 
-                        instanceCount[school][grade][gender] += genderCount;
+                    totalStudents += genderCount;
+                    const individualItems = [];
+                    const supplyList = schoolSupplies[school][grade];
 
-                        if (!separateItems[school]) {
-                            separateItems[school] = {};
-                        }
+                    for (let itemKey in supplyList) {
+                        const supplyItem = supplyList[itemKey];
+                        const item = data.Items[supplyItem.Item || itemKey];
 
-                        if (!separateItems[school][grade]) {
-                            separateItems[school][grade] = {};
-                        }
-                        if (!separateItems[school][grade][gender]) {
-                            separateItems[school][grade][gender] = [];
-                        }
+                        if (!supplyItem.Sex || supplyItem.Sex === gender || gender === 'Other') {
+                            individualItems.push({
+                                text: item.Name,
+                                unit: item.Unit,
+                                quantity: supplyItem.Total,
+                                countPerUnit: item.Count,
+                                detail: item.Detail || "",
+                                note: supplyItem.Note || ""
+                            });
 
-                        const supplyList = schoolSupplies[school][grade];
-                        for (let itemKey in supplyList) {
-                            const supplyItem = supplyList[itemKey];
-                            const item = data.Items[supplyItem.Item || itemKey];
-
-                            if (!supplyItem.Sex || supplyItem.Sex === gender || gender === 'Other') {
-                                const separateItem = {
+                            if (combinedItems[itemKey]) {
+                                combinedItems[itemKey].quantity += supplyItem.Total * genderCount;
+                                if (combinedItems[itemKey].note && supplyItem.Note) {
+                                    combinedItems[itemKey].note += `, ${supplyItem.Note}`;
+                                } else if (supplyItem.Note) {
+                                    combinedItems[itemKey].note = supplyItem.Note;
+                                }
+                            } else {
+                                combinedItems[itemKey] = {
                                     text: item.Name,
                                     unit: item.Unit,
                                     quantity: supplyItem.Total * genderCount,
                                     countPerUnit: item.Count,
                                     detail: item.Detail || "",
-                                    note: supplyItem.Note || ""
+                                    note: `${supplyItem.Sex ? supplyItem.Sex + "/Other " : ""}${supplyItem.Note || ""}`
                                 };
-
-                                separateItems[school][grade][gender].push(separateItem);
-
-                                if (combinedItems[itemKey]) {
-                                    combinedItems[itemKey].quantity += supplyItem.Total * genderCount;
-                                    if (combinedItems[itemKey].note && supplyItem.Note) {
-                                        combinedItems[itemKey].note += `, ${supplyItem.Note}`;
-                                    } else if (supplyItem.Note) {
-                                        combinedItems[itemKey].note = supplyItem.Note;
-                                    }
-                                } else {
-                                    combinedItems[itemKey] = {
-                                        text: item.Name,
-                                        unit: item.Unit,
-                                        quantity: supplyItem.Total * genderCount,
-                                        countPerUnit: item.Count,
-                                        detail: item.Detail || "",
-                                        note: `${supplyItem.Sex ? supplyItem.Sex + "/Other " : ""}${supplyItem.Note || ""}`
-                                    };
-                                }
                             }
                         }
+                    }
+
+                    for (let studentIndex = 0; studentIndex < genderCount; studentIndex++) {
+                        studentLists.push({ school, grade, gender, items: individualItems });
                     }
                 });
             });
@@ -1246,42 +1237,64 @@
             // Now loop through the sorted entries
             for (let [key, value] of sortedItems) {
                 const listItem = document.createElement("li");
+                const checkboxId = `combined-item-${combinedList.children.length}`;
                 const unit = value.unit.length > 0 && value.unit[0] ? (value.quantity > 1 ? value.unit[1] : value.unit[0]) : "";
                 const detail = value.detail ? ` — ${value.detail}` : "";
                 const note = value.note ? ` — ${value.note}` : "";
                 const perUnit = value.countPerUnit > 1 && unit ? ` (${value.countPerUnit} per ${value.unit[0]})` : "";
-                listItem.innerHTML = `<input type="checkbox"> ${value.quantity} ${unit ? unit + " of " : ""}<strong>${value.text}</strong>${detail}${perUnit}${note}`;
+                listItem.innerHTML = `<input type="checkbox" id="${checkboxId}" aria-label="Mark ${value.text} purchased"><label class="item-copy" for="${checkboxId}"><span class="item-quantity">${value.quantity}</span> ${unit ? unit + " of " : ""}<strong>${value.text}</strong>${detail}${perUnit}${note}</label>`;
                 combinedList.appendChild(listItem);
             }
 
-            for (let school in separateItems) {
-                const schoolHeading = document.createElement("h3");
-                schoolHeading.innerText = school;
-                separateLists.appendChild(schoolHeading);
+            const groupTotals = studentLists.reduce((totals, student) => {
+                const key = `${student.school}|${student.grade}|${student.gender}`;
+                totals[key] = (totals[key] || 0) + 1;
+                return totals;
+            }, {});
+            const groupIndexes = {};
+            let individualItemIndex = 0;
 
-                for (let grade in separateItems[school]) {
-                    for (let gender in separateItems[school][grade]) {
-                        const genderHeading = document.createElement("h4");
-                        const instanceText = instanceCount[school][grade][gender] > 1 ? ` - x${instanceCount[school][grade][gender]}` : "";
-                        genderHeading.innerText = `${grade} ${gender}${instanceText}`;
-                        separateLists.appendChild(genderHeading);
+            if (totalStudents > 1) {
+                studentLists.forEach(student => {
+                    const key = `${student.school}|${student.grade}|${student.gender}`;
+                    groupIndexes[key] = (groupIndexes[key] || 0) + 1;
+                    const genderLabel = student.gender === 'Boys' ? 'Boy' : student.gender === 'Girls' ? 'Girl' : 'Student';
+                    const numberLabel = groupTotals[key] > 1 ? ` ${groupIndexes[key]}` : '';
+                    const studentList = document.createElement('article');
+                    studentList.className = 'studentList';
+                    studentList.innerHTML = `<header class="studentListHeader"><p class="studentListSchool">${student.school}</p><h3>${student.grade} ${genderLabel}${numberLabel} List</h3></header>`;
 
-                        const separateList = document.createElement("ul");
+                    const itemList = document.createElement('ul');
+                    student.items.forEach(item => {
+                        const checkboxId = `individual-item-${individualItemIndex++}`;
+                        const unit = item.unit.length > 0 && item.unit[0] ? (item.quantity > 1 ? item.unit[1] : item.unit[0]) : "";
+                        const detail = item.detail ? ` — ${item.detail}` : "";
+                        const note = item.note ? ` — ${item.note}` : "";
+                        const perUnit = item.countPerUnit > 1 && unit ? ` (${item.countPerUnit} per ${item.unit[0]})` : "";
+                        const listItem = document.createElement("li");
+                        listItem.innerHTML = `<input type="checkbox" id="${checkboxId}" aria-label="Mark ${item.text} purchased"><label class="item-copy" for="${checkboxId}"><span class="item-quantity">${item.quantity}</span> ${unit ? unit + " of " : ""}<strong>${item.text}</strong>${detail}${perUnit}${note}</label>`;
+                        itemList.appendChild(listItem);
+                    });
 
-                        separateItems[school][grade][gender].forEach(item => {
-                            const unit = item.unit.length > 0 && item.unit[0] ? (item.quantity > 1 ? item.unit[1] : item.unit[0]) : "";
-                            const detail = item.detail ? ` — ${item.detail}` : "";
-                            const note = item.note ? ` — ${item.note}` : "";
-                            const perUnit = item.countPerUnit > 1 && unit ? ` (${item.countPerUnit} per ${item.unit[0]})` : "";
-                            const listItem = document.createElement("li");
-                            listItem.innerHTML = `<input type="checkbox"> ${item.quantity} ${unit ? unit + " of " : ""}${item.text}${detail}${perUnit}${note}`;
-                            separateList.appendChild(listItem);
-                        });
-
-                        separateLists.appendChild(separateList);
-                    }
-                }
+                    studentList.appendChild(itemList);
+                    separateLists.appendChild(studentList);
+                });
             }
+
+            if (sortedItems.length === 0) {
+                combinedList.innerHTML = '<li class="empty-state">Choose at least one school, grade, and list quantity to build your shopping list.</li>';
+                separateLists.innerHTML = '<div class="empty-state">Individual lists will appear here after you generate a shopping list.</div>';
+            }
+
+            const isSingleStudent = totalStudents === 1;
+            resultsCard.classList.toggle('singleStudent', isSingleStudent);
+            individualTab.hidden = isSingleStudent;
+            combinedPanelTitle.textContent = isSingleStudent ? 'Single student list' : 'Combined shopping list';
+            combinedPanelDescription.textContent = isSingleStudent
+                ? 'Everything needed for the selected student.'
+                : 'Everything you need, totaled across all selected students.';
+
+            showResultsTab('combined');
         }
 
         function addGradeSet() {
@@ -1294,6 +1307,18 @@
             document.getElementById('gradesContainer').appendChild(gradeSet);
         }
 
+        function showResultsTab(tabName) {
+            document.querySelectorAll('.tabButton').forEach(button => {
+                const isActive = button.dataset.tab === tabName;
+                button.classList.toggle('active', isActive);
+                button.setAttribute('aria-selected', isActive);
+            });
+
+            document.querySelectorAll('.resultPanel').forEach(panel => {
+                panel.hidden = panel.id !== `${tabName}Panel`;
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             populateSchools();
 
@@ -1304,126 +1329,845 @@
         });
     </script>
     <style>
-        /* General styling */
+        :root {
+            color-scheme: light;
+            --navy-950: #081a2e;
+            --navy-900: #102a43;
+            --navy-800: #183b56;
+            --teal-700: #0f766e;
+            --teal-600: #0d9488;
+            --teal-100: #ccfbf1;
+            --slate-700: #334e68;
+            --slate-600: #52697d;
+            --slate-300: #cbd8e2;
+            --slate-200: #dce6ed;
+            --slate-100: #edf3f6;
+            --page: #f4f7f9;
+            --white: #ffffff;
+            --shadow: 0 18px 45px rgba(16, 42, 67, 0.10);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            min-width: 320px;
+            min-height: 100vh;
             margin: 0;
-            padding: 0 10px;
-            color: #333;
+            background: var(--page);
+            color: var(--navy-950);
+            font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: 16px;
+            line-height: 1.55;
         }
 
-        h2, h3, h4 {
-            background-color: #2C3E50;
-            color: #ECF0F1;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 20px;
+        button,
+        input,
+        select {
+            font: inherit;
         }
 
-        button {
-            padding: 10px 20px;
-            margin: 10px 5px;
-            border: none;
-            border-radius: 5px;
-            background-color: #2980B9;
-            color: white;
+        button,
+        select,
+        input[type="number"],
+        input[type="checkbox"] {
+            accent-color: var(--teal-700);
+        }
+
+        button,
+        select,
+        label,
+        input[type="checkbox"] {
             cursor: pointer;
-            transition: background-color 0.3s;
         }
 
-        button:hover {
-            background-color: #3498DB;
+        button:focus-visible,
+        select:focus-visible,
+        input:focus-visible,
+        a:focus-visible {
+            outline: 3px solid rgba(13, 148, 136, 0.28);
+            outline-offset: 2px;
         }
 
-        /* Grades container styling */
-        #gradesContainer {
-            background-color: #ECF0F1;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
+        .siteHeader {
+            position: relative;
+            overflow: hidden;
+            padding: 54px 24px 76px;
+            background: linear-gradient(125deg, var(--navy-950), var(--navy-800));
+            color: var(--white);
+        }
+
+        .siteHeader::after {
+            position: absolute;
+            right: -130px;
+            bottom: -190px;
+            width: 420px;
+            height: 420px;
+            border: 70px solid rgba(45, 212, 191, 0.08);
+            border-radius: 50%;
+            content: "";
+        }
+
+        .headerInner,
+        .pageShell {
+            width: min(1160px, 100%);
+            margin: 0 auto;
+        }
+
+        .headerInner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .eyebrow {
+            display: inline-flex;
             align-items: center;
+            gap: 8px;
+            margin: 0 0 12px;
+            color: #99f6e4;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #2dd4bf;
+            content: "";
+        }
+
+        h1 {
+            max-width: 760px;
+            margin: 0;
+            font-size: clamp(2rem, 5vw, 3.35rem);
+            line-height: 1.08;
+            letter-spacing: -0.035em;
+        }
+
+        .headerIntro {
+            max-width: 700px;
+            margin: 18px 0 0;
+            color: #d9e6ef;
+            font-size: clamp(1rem, 2vw, 1.14rem);
+        }
+
+        .sourceLinksGroup {
+            display: inline-flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 26px;
+            padding: 12px 14px 14px;
+            border: 1px solid rgba(153, 246, 228, 0.26);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .sourceLinksLabel {
+            color: #99f6e4;
+            font-size: 0.72rem;
+            font-weight: 850;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+
+        .sourceLinks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .sourceLinks a {
+            padding: 8px 13px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.07);
+            color: var(--white);
+            font-size: 0.86rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: border-color 160ms ease, background 160ms ease;
+        }
+
+        .sourceLinks a:hover {
+            border-color: rgba(153, 246, 228, 0.7);
+            background: rgba(15, 118, 110, 0.28);
+        }
+
+        .pageShell {
+            position: relative;
+            z-index: 2;
+            margin-top: -38px;
+            padding: 0 24px 52px;
+        }
+
+        .card {
+            overflow: hidden;
+            border: 1px solid rgba(203, 216, 226, 0.9);
+            border-radius: 18px;
+            background: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .setupCard {
+            padding: clamp(22px, 4vw, 36px);
+        }
+
+        .sectionHeading {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+
+        .stepBadge {
+            display: grid;
+            flex: 0 0 34px;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: var(--teal-700);
+            color: var(--white);
+            font-weight: 800;
+            place-items: center;
+        }
+
+        h2,
+        h3,
+        h4,
+        p {
+            margin-top: 0;
+        }
+
+        .sectionHeading h2,
+        .panelHeading h2 {
+            margin-bottom: 4px;
+            color: var(--navy-900);
+            font-size: clamp(1.25rem, 3vw, 1.55rem);
+            line-height: 1.25;
+            letter-spacing: -0.015em;
+        }
+
+        .sectionHeading p,
+        .panelHeading p {
+            margin-bottom: 0;
+            color: var(--slate-600);
+        }
+
+        #gradesContainer {
+            display: grid;
+            gap: 14px;
         }
 
         .gradeSet {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            justify-content: center;
-            gap: 15px;
+            display: grid;
+            grid-template-columns: minmax(230px, 1.45fr) minmax(170px, 0.9fr) minmax(330px, 1.45fr);
+            gap: 16px;
+            padding: 18px;
+            border: 1px solid var(--slate-200);
+            border-radius: 14px;
+            background: #fbfdfe;
+        }
+
+        .formField {
+            display: grid;
+            align-content: start;
+            gap: 7px;
+        }
+
+        .formField > label,
+        .quantityGroup legend {
+            color: var(--slate-700);
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.015em;
+        }
+
+        select,
+        input[type="number"] {
             width: 100%;
-            max-width: 800px;
+            min-height: 46px;
+            border: 1px solid var(--slate-300);
+            border-radius: 10px;
+            background: var(--white);
+            color: var(--navy-950);
+            transition: border-color 160ms ease, box-shadow 160ms ease;
         }
 
-        .schoolDropdown, .gradeDropdown, .boysInput, .girlsInput, .anyInput {
-            padding: 10px;
-            border: 1px solid #BDC3C7;
-            border-radius: 5px;
-            background-color: #fff;
+        select {
+            padding: 10px 38px 10px 12px;
         }
 
-        .gradeDropdown {
-            margin-left: 0;
+        input[type="number"] {
+            padding: 9px 8px;
+            text-align: center;
         }
 
-        /* List styling */
-        #separateLists, #combinedList {
-            background-color: #ECF0F1;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-top: 10px;
+        select:hover,
+        input[type="number"]:hover {
+            border-color: #8aa4b8;
         }
 
-        #combinedList {
-            list-style-type: none;
-            padding-left: 0;
+        .quantityGroup {
+            min-width: 0;
+            margin: 0;
+            padding: 0;
+            border: 0;
         }
 
-        #combinedList li {
-            padding: 8px 10px;
-            border-bottom: 1px solid #BDC3C7;
+        .quantityGroup legend {
+            margin-bottom: 7px;
         }
 
-        #combinedList li:last-child {
-            border-bottom: none;
+        .quantityGrid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(84px, 1fr));
+            gap: 8px;
+        }
+
+        .quantityControl {
+            display: grid;
+            grid-template-columns: 1fr 46px;
+            align-items: center;
+            gap: 6px;
+            min-height: 46px;
+            padding-left: 11px;
+            border: 1px solid var(--slate-300);
+            border-radius: 10px;
+            background: var(--white);
+            color: var(--slate-700);
+            font-size: 0.84rem;
+            font-weight: 700;
+        }
+
+        .quantityControl input {
+            min-height: 42px;
+            border: 0;
+            border-left: 1px solid var(--slate-200);
+            border-radius: 0 9px 9px 0;
+        }
+
+        .quantityHelp {
+            margin: 8px 2px 0;
+            color: var(--slate-600);
+            font-size: 0.78rem;
+            line-height: 1.4;
         }
 
         .buttonContainer {
             display: flex;
-            justify-content: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 22px;
         }
 
-        @media (max-width: 600px) {
+        .button {
+            min-height: 46px;
+            padding: 10px 18px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            font-weight: 800;
+            transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+        }
+
+        .buttonSecondary {
+            border-color: var(--slate-300);
+            background: var(--white);
+            color: var(--navy-800);
+        }
+
+        .buttonSecondary:hover {
+            background: var(--slate-100);
+        }
+
+        .buttonPrimary {
+            background: var(--teal-700);
+            color: var(--white);
+            box-shadow: 0 8px 18px rgba(15, 118, 110, 0.2);
+        }
+
+        .buttonPrimary:hover {
+            background: #0b665f;
+            box-shadow: 0 10px 22px rgba(15, 118, 110, 0.26);
+        }
+
+        .resultsCard {
+            margin-top: 24px;
+        }
+
+        .resultTabs {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 12px 0;
+            border-bottom: 1px solid var(--slate-200);
+            background: #f8fbfc;
+        }
+
+        .tabButtonGroup {
+            display: flex;
+            align-self: stretch;
+            gap: 4px;
+        }
+
+        .tabButton {
+            position: relative;
+            padding: 12px 16px 14px;
+            border: 0;
+            background: transparent;
+            color: var(--slate-600);
+            font-weight: 800;
+        }
+
+        .tabButton::after {
+            position: absolute;
+            right: 12px;
+            bottom: -1px;
+            left: 12px;
+            height: 3px;
+            border-radius: 3px 3px 0 0;
+            background: transparent;
+            content: "";
+        }
+
+        .tabButton.active {
+            color: var(--teal-700);
+        }
+
+        .tabButton.active::after {
+            background: var(--teal-600);
+        }
+
+        .printButton {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-height: 40px;
+            margin: 0 2px 9px auto;
+            padding: 8px 12px;
+            border: 1px solid var(--slate-300);
+            border-radius: 9px;
+            background: var(--white);
+            color: var(--navy-800);
+            font-size: 0.84rem;
+            font-weight: 800;
+            transition: border-color 160ms ease, background 160ms ease;
+        }
+
+        .printButton:hover {
+            border-color: var(--teal-600);
+            background: var(--teal-100);
+        }
+
+        .printButton svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .resultPanel {
+            padding: clamp(22px, 4vw, 36px);
+        }
+
+        .panelHeading {
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--slate-200);
+        }
+
+        #combinedList,
+        #separateLists ul {
+            margin: 18px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        #combinedList li,
+        #separateLists li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 13px 8px;
+            border-bottom: 1px solid var(--slate-200);
+            color: var(--slate-700);
+        }
+
+        #combinedList li:last-child,
+        #separateLists li:last-child {
+            border-bottom: 0;
+        }
+
+        #combinedList input[type="checkbox"],
+        #separateLists input[type="checkbox"] {
+            flex: 0 0 auto;
+            width: 19px;
+            height: 19px;
+            margin: 3px 0 0;
+        }
+
+        .item-copy {
+            min-width: 0;
+            color: var(--slate-700);
+            overflow-wrap: anywhere;
+        }
+
+        .item-copy strong {
+            color: var(--navy-900);
+        }
+
+        .item-quantity {
+            display: inline-grid;
+            min-width: 27px;
+            min-height: 27px;
+            margin: -2px 3px -2px 0;
+            padding: 1px 6px;
+            border-radius: 7px;
+            background: var(--teal-100);
+            color: var(--teal-700);
+            font-size: 0.86rem;
+            font-weight: 900;
+            place-items: center;
+        }
+
+        .studentList {
+            overflow: hidden;
+            margin-top: 20px;
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+        }
+
+        .studentListHeader {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--slate-200);
+            background: #f8fbfc;
+        }
+
+        .studentListSchool {
+            margin: 0 0 2px;
+            color: var(--teal-700);
+            font-size: 0.72rem;
+            font-weight: 850;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .studentList h3 {
+            margin: 0;
+            color: var(--navy-900);
+            font-size: 1.08rem;
+        }
+
+        .studentList ul,
+        #separateLists .studentList ul {
+            margin: 0;
+            padding: 0 14px;
+        }
+
+        .empty-state,
+        #combinedList .empty-state {
+            display: block;
+            padding: 26px 18px;
+            border: 1px dashed var(--slate-300);
+            border-radius: 12px;
+            background: #fbfdfe;
+            color: var(--slate-600);
+            text-align: center;
+        }
+
+        .pageFooter {
+            max-width: 760px;
+            margin: 24px auto 0;
+            color: var(--slate-600);
+            font-size: 0.82rem;
+            text-align: center;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 900px) {
             .gradeSet {
-                flex-direction: column;
-                align-items: center;
+                grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+            }
+
+            .quantityGroup {
+                grid-column: 1 / -1;
+            }
+
+            .quantityGrid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
-        .linksContainer {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
+
+        @media (max-width: 640px) {
+            .siteHeader {
+                padding: 38px 18px 64px;
+            }
+
+            .pageShell {
+                margin-top: -28px;
+                padding: 0 12px 36px;
+            }
+
+            .sourceLinksGroup {
+                display: flex;
+                width: 100%;
+            }
+
+            .sourceLinks {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .sourceLinks a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 42px;
+                padding: 8px 10px;
+                text-align: center;
+            }
+
+            .card {
+                border-radius: 14px;
+            }
+
+            .setupCard,
+            .resultPanel {
+                padding: 20px 16px;
+            }
+
+            .gradeSet {
+                grid-template-columns: 1fr;
+                gap: 13px;
+                padding: 14px;
+            }
+
+            .quantityGroup {
+                grid-column: auto;
+            }
+
+            .quantityGrid {
+                grid-template-columns: 1fr;
+            }
+
+            .quantityControl {
+                grid-template-columns: 1fr 64px;
+            }
+
+            .buttonContainer {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .buttonPrimary {
+                grid-row: 1;
+            }
+
+            .resultTabs {
+                padding-right: 6px;
+                padding-left: 6px;
+            }
+
+            .tabButton {
+                flex: 1;
+                padding-right: 8px;
+                padding-left: 8px;
+                font-size: 0.9rem;
+            }
+
+            .tabButtonGroup {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .printButton {
+                flex: 0 0 42px;
+                width: 42px;
+                padding: 8px;
+            }
+
+            .printButtonLabel {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip: rect(0 0 0 0);
+                white-space: nowrap;
+                clip-path: inset(50%);
+            }
+
+            #combinedList li,
+            #separateLists li {
+                padding-right: 2px;
+                padding-left: 2px;
+            }
         }
 
-        .linksContainer a {
-            text-decoration: none;
-            color: #2980B9;
-            font-weight: bold;
-            padding: 10px 15px;
-            border: 2px solid #2980B9;
-            border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
+        @page {
+            margin: 0.4in;
         }
 
-        .linksContainer a:hover {
-            background-color: #2980B9;
-            color: #fff;
+        @media print {
+            body {
+                background: var(--white);
+                color: #000;
+                font-size: 8.5pt;
+                line-height: 1.25;
+            }
+
+            .siteHeader {
+                padding: 0 0 8px;
+                background: transparent;
+                color: #000;
+            }
+
+            .siteHeader::after,
+            .eyebrow,
+            .headerIntro,
+            .sourceLinksGroup,
+            .setupCard,
+            .resultTabs,
+            .pageFooter {
+                display: none !important;
+            }
+
+            h1 {
+                max-width: none;
+                margin: 0;
+                color: #000;
+                font-size: 16pt;
+                line-height: 1.1;
+            }
+
+            .pageShell {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            .card {
+                border: 0;
+                box-shadow: none;
+            }
+
+            .resultPanel,
+            .resultPanel[hidden] {
+                display: block !important;
+                padding: 0;
+            }
+
+            .resultsCard.singleStudent #individualPanel {
+                display: none !important;
+            }
+
+            #combinedPanel {
+                break-after: page;
+            }
+
+            .resultsCard.singleStudent #combinedPanel {
+                break-after: auto;
+            }
+
+            #individualPanel {
+                margin-top: 0;
+            }
+
+            #individualPanel > .panelHeading {
+                display: none;
+            }
+
+            .panelHeading {
+                padding-bottom: 5px;
+            }
+
+            .panelHeading h2 {
+                margin-bottom: 0;
+                font-size: 11pt;
+            }
+
+            .panelHeading p {
+                display: none;
+            }
+
+            #combinedList,
+            #separateLists ul {
+                margin-top: 4px;
+            }
+
+            #combinedList li,
+            #separateLists li {
+                gap: 6px;
+                padding: 3px 0;
+                break-inside: avoid;
+            }
+
+            #combinedList input[type="checkbox"],
+            #separateLists input[type="checkbox"] {
+                width: 13px;
+                height: 13px;
+                margin-top: 1px;
+            }
+
+            .item-copy {
+                line-height: 1.2;
+            }
+
+            .item-quantity {
+                min-width: 18px;
+                min-height: 18px;
+                margin: -1px 2px -1px 0;
+                padding: 0 3px;
+                border-radius: 4px;
+                font-size: 7.5pt;
+            }
+
+            .studentList {
+                overflow: visible;
+                margin: 0;
+                border: 0;
+                border-radius: 0;
+                break-after: page;
+                break-inside: avoid;
+            }
+
+            .studentList:last-child {
+                break-after: auto;
+            }
+
+            .studentListHeader {
+                padding: 0 0 5px;
+                background: transparent;
+            }
+
+            .studentListSchool {
+                margin-bottom: 1px;
+                color: #000;
+                font-size: 7pt;
+            }
+
+            .studentList h3 {
+                color: #000;
+                font-size: 11pt;
+            }
+
+            .studentList ul,
+            #separateLists .studentList ul {
+                margin-top: 4px;
+                padding: 0;
+            }
         }
     </style>
     <meta charset="UTF-8">
@@ -1432,48 +2176,107 @@
 </head>
 
 <body>
-    <h2>GRISD School Supplies List Combiner 2026-2027 - Select Classes</h2>
-    <div class="linksContainer">
-        <a href="https://glenroseisdtx.sites.thrillshare.com/o/gres/article/2312598" target="_blank">Elementary</a>
-        <a href="https://www.grisd.net/o/gri/page/school-supplies-list" target="_blank">Intermediate</a>
-        <a href="https://www.grisd.net/o/grjhs/page/school-supply-lists" target="_blank">Junior High</a>
-        <a href="https://www.grisd.net/o/grhs" target="_blank">High</a>
-    </div>
-    <div class="linksContainer">
-        <span style="text-align: center;">
-            Enter multiple School, Grades/Classes and the number of each list you want counted to get a unified supplies list. (Other/NA shows all items)
-            </br>
-            This is an unofficial tool made to assist in school shopping for multiple students.
-        </span>
-    </div>
-    <div id="gradesContainer">
-        <div class="gradeSet">
-            <select class="schoolDropdown" onchange="populateGrades(this)">
-                <option value="">Select School</option>
-                <!-- Schools will be populated dynamically -->
-            </select>
-            <select class="gradeDropdown">
-                <option value="">Select Grade/Class</option>
-                <!-- Grades will be populated dynamically -->
-            </select>
-            Boys:
-            <input type="number" class="boysInput" min="0" value="0">
-            Girls:
-            <input type="number" class="girlsInput" min="0" value="0">
-            Other/NA:
-            <input type="number" class="anyInput" min="0" value="0">
+    <header class="siteHeader">
+        <div class="headerInner">
+            <p class="eyebrow">2026–2027 School Year</p>
+            <h1>School Supply List Builder</h1>
+            <p class="headerIntro">Combine supply lists for every student into one clear shopping checklist, while keeping each individual list close at hand.</p>
+            <div class="sourceLinksGroup">
+                <span class="sourceLinksLabel">Official GRISD supply lists</span>
+                <nav class="sourceLinks" aria-label="Official GRISD school supply lists">
+                    <a href="https://glenroseisdtx.sites.thrillshare.com/o/gres/article/2312598" target="_blank" rel="noopener">Elementary</a>
+                    <a href="https://www.grisd.net/o/gri/page/school-supplies-list" target="_blank" rel="noopener">Intermediate</a>
+                    <a href="https://www.grisd.net/o/grjhs/page/school-supply-lists" target="_blank" rel="noopener">Junior High</a>
+                    <a href="https://www.grisd.net/o/grhs" target="_blank" rel="noopener">High School</a>
+                </nav>
+            </div>
         </div>
-    </div>
-    <div class="buttonContainer">
-        <button onclick="addGradeSet()">+ Add Another Grade/Class</button>
-        <button onclick="generateList()">Submit</button>
-    </div>
-    <h2>Combined Shopping List</h2>
-    <ul id="combinedList"></ul>
+    </header>
 
-    <h2>Individual List</h2>
-    <div id="separateLists"></div>
+    <main class="pageShell">
+        <section class="card setupCard" aria-labelledby="student-lists-heading">
+            <div class="sectionHeading">
+                <span class="stepBadge" aria-hidden="true">1</span>
+                <div>
+                    <h2 id="student-lists-heading">Add student lists</h2>
+                    <p>Select a school and grade, then enter the number of students for each list type.</p>
+                </div>
+            </div>
 
+            <div id="gradesContainer">
+                <div class="gradeSet">
+                    <div class="formField">
+                        <label>School</label>
+                        <select class="schoolDropdown" onchange="populateGrades(this)" aria-label="School">
+                            <option value="">Select a school</option>
+                            <!-- Schools will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="formField">
+                        <label>Grade or class</label>
+                        <select class="gradeDropdown" aria-label="Grade or class">
+                            <option value="">Select a grade</option>
+                            <!-- Grades will be populated dynamically -->
+                        </select>
+                    </div>
+                    <fieldset class="quantityGroup">
+                        <legend>Number of students</legend>
+                        <div class="quantityGrid">
+                            <label class="quantityControl"><span>Boys</span><input type="number" class="boysInput" min="0" inputmode="numeric" value="0" aria-label="Number of boys"></label>
+                            <label class="quantityControl"><span>Girls</span><input type="number" class="girlsInput" min="0" inputmode="numeric" value="0" aria-label="Number of girls"></label>
+                            <label class="quantityControl"><span>Other / N/A</span><input type="number" class="anyInput" min="0" inputmode="numeric" value="0" aria-label="Number of other or not applicable students"></label>
+                        </div>
+                        <p class="quantityHelp">Other / N/A includes every item listed for that grade.</p>
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="buttonContainer">
+                <button class="button buttonSecondary" type="button" onclick="addGradeSet()">+ Add another grade or class</button>
+                <button class="button buttonPrimary" type="button" onclick="generateList()">Build shopping list</button>
+            </div>
+        </section>
+
+        <section class="card resultsCard" id="resultsCard" aria-label="Shopping list results">
+            <div class="resultTabs">
+                <div class="tabButtonGroup" role="tablist" aria-label="Shopping list views">
+                    <button class="tabButton active" type="button" role="tab" aria-selected="true" aria-controls="combinedPanel" data-tab="combined" onclick="showResultsTab('combined')">Combined list</button>
+                    <button class="tabButton" id="individualTabButton" type="button" role="tab" aria-selected="false" aria-controls="individualPanel" data-tab="individual" onclick="showResultsTab('individual')">Individual lists</button>
+                </div>
+                <button class="printButton" type="button" onclick="window.print()" aria-label="Print shopping lists" title="Print shopping lists">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M6 9V3h12v6"></path>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                        <path d="M6 14h12v7H6z"></path>
+                        <path d="M18 12h.01"></path>
+                    </svg>
+                    <span class="printButtonLabel">Print</span>
+                </button>
+            </div>
+
+            <section class="resultPanel" id="combinedPanel" role="tabpanel">
+                <div class="panelHeading">
+                    <h2 id="combinedPanelTitle">Combined shopping list</h2>
+                    <p id="combinedPanelDescription">Everything you need, totaled across all selected students.</p>
+                </div>
+                <ul id="combinedList">
+                    <li class="empty-state">Your combined shopping list will appear here.</li>
+                </ul>
+            </section>
+
+            <section class="resultPanel" id="individualPanel" role="tabpanel" hidden>
+                <div class="panelHeading">
+                    <h2>Individual lists</h2>
+                    <p>Use these lists to double-check supplies for each student.</p>
+                </div>
+                <div id="separateLists">
+                    <div class="empty-state">Individual lists will appear here after you generate a shopping list.</div>
+                </div>
+            </section>
+        </section>
+
+        <footer class="pageFooter">This unofficial tool is provided to make school-supply shopping easier. Use the school links above to reference the official lists.</footer>
+    </main>
 </body>
 
 </html>
