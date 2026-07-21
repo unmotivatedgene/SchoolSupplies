@@ -5,294 +5,394 @@
     <script>
         // JSON data
         const data = {
-              "Items": {
-                "BabyWipes": {
-                    "Name": "Baby Wipes",
-                    "Unit": ["Package","Packages"],
-                    "Count": 80
-                },
-                "Binder_1in": {
-                    "Name": "Binder – 1 in. 3 ring",
+            "Items": {
+                "Baby wipes": {
+                    "Name": "Baby wipes",
+                    "Detail": "Soft pack, 72 ct.",
                     "Unit": [],
                     "Count": 1
                 },
-                "ColoredPencils": {
+                "Colored Pencils": {
                     "Name": "Colored Pencils",
-                    "Unit": ["Box", "Boxes"],
-                    "Count": 12
-                },
-                "CompositionBook_WideRuled": {
-                    "Name": "Composition Notebook – Wide Ruled (100pgs)",
+                    "Detail": "12 ct.",
                     "Unit": [],
                     "Count": 1
                 },
-                "ConstructionPaper": {
-                    "Name": "Construction Paper - Assorted Colors",
-                    "Unit": ["Pack", "Packs"],
-                    "Count": 50
+                "Composition book - Primary": {
+                    "Name": "Composition book - Primary",
+                    "Detail": "Primary story, Red Baseline, 100 ct, marble",
+                    "Unit": [],
+                    "Count": 1
                 },
-                "Crayons_Crayola": {
+                "Composition book - Wide-ruled": {
+                    "Name": "Composition book - Wide-ruled",
+                    "Detail": "Wide Ruled, 100 ct, Black Marble",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Construction paper": {
+                    "Name": "Construction paper",
+                    "Detail": "12 x 18 in., 50 ct., assorted colors",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Crayons": {
                     "Name": "Crayons",
-                    "Unit": ["Box", "Boxes"],
-                    "Count": 24
-                },
-                "DishLiquid": {
-                    "Name": "Dish Liquid",
+                    "Detail": "24 ct",
                     "Unit": [],
                     "Count": 1
                 },
-                "DishwasherPods": {
-                    "Name": "Dishwasher Pods",
+                "Dish liquid": {
+                    "Name": "Dish liquid",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
-                "DryEraseMarker_Chisel": {
-                    "Name": "Dry Erase Marker - Chisel Tip",
+                "Dishwasher pods": {
+                    "Name": "Dishwasher pods",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
-                "DryEraseMarker_Fine": {
-                    "Name": "Dry Erase Marker - Fine Tip",
+                "Disinfecting wipes": {
+                    "Name": "Disinfecting wipes",
+                    "Detail": "Not for skin, 35 ct",
                     "Unit": [],
                     "Count": 1
                 },
-                "EarbudAdapter": {
-                    "Name": "Earbud Adapter - USB-C",
+                "Dry Erase Markers - Chisel tip": {
+                    "Name": "Dry Erase Markers - Chisel tip",
+                    "Detail": "",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Dry Erase Markers - Fine tip": {
+                    "Name": "Dry Erase Markers - Fine tip",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
                 "Earbuds": {
-                    "Name": "Earbuds/Headphones - Straight 3.5mm",
+                    "Name": "Earbuds",
+                    "Detail": "USB-C",
                     "Unit": [],
                     "Count": 1
                 },
-                "Eraser_Cap": {
-                    "Name": "Erasers - Pencil Cap",
-                    "Unit": ["Pack", "Packs"],
-                    "Count": 6
+                "Eraser - Pencil Cap": {
+                    "Name": "Eraser - Pencil Cap",
+                    "Detail": "6-pack, assorted colors",
+                    "Unit": [],
+                    "Count": 1
                 },
-                "Eraser_Pink": {
+                "Eraser - Pink": {
                     "Name": "Eraser - Pink",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
-                "FacialTissue": {
-                    "Name": "Facial Tissue",
-                    "Unit": ["Box","Boxes"],
-                    "Count": 72
-                },
-                "Folder_Blue": {
-                    "Name": "Folder - Blue (Brads & Pockets)",
+                "Facial tissue": {
+                    "Name": "Facial tissue",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
-                "Folder_Green": {
-                    "Name": "Folder - Green (Brads & Pockets)",
+                "Filler paper - 100 ct": {
+                    "Name": "Filler paper - 100 ct",
+                    "Detail": "wide rule",
                     "Unit": [],
                     "Count": 1
                 },
-                "Folder_Purple": {
-                    "Name": "Folder - Purple (Brads & Pockets)",
+                "Filler paper - 120 ct": {
+                    "Name": "Filler paper - 120 ct",
+                    "Detail": "wide rule",
                     "Unit": [],
                     "Count": 1
                 },
-                "Folder_Red": {
-                    "Name": "Folder - Red (Brads & Pockets)",
+                "Folder - Any Color": {
+                    "Name": "Folder - Any Color",
+                    "Detail": "Poly pocket w/ brads",
                     "Unit": [],
                     "Count": 1
                 },
-                "Folder_Yellow": {
-                    "Name": "Folder - Yellow (Brads & Pockets)",
+                "Folder - BLUE": {
+                    "Name": "Folder - BLUE",
+                    "Detail": "Poly pocket w/ brads",
                     "Unit": [],
                     "Count": 1
                 },
-                "Folder_Any": {
-                    "Name": "Folder - Any Color (Brads & Pockets)",
+                "Folder - GREEN": {
+                    "Name": "Folder - GREEN",
+                    "Detail": "Poly pocket w/ brads",
                     "Unit": [],
                     "Count": 1
                 },
-                "Glue_Elmers": {
-                    "Name": "Glue - Liquid",
-                    "Unit": [],
-                    "Count": 4
-                },
-                "GlueStick_Elmers": {
-                    "Name": "Glue Stick",
+                "Folder - PURPLE": {
+                    "Name": "Folder - PURPLE",
+                    "Detail": "Poly pocket w/ brads",
                     "Unit": [],
                     "Count": 1
                 },
-                "GlueStick_Large": {
-                    "Name": "Glue Stick - Large",
+                "Folder - RED": {
+                    "Name": "Folder - RED",
+                    "Detail": "Poly pocket w/ brads",
                     "Unit": [],
                     "Count": 1
                 },
-                "HandSoap": {
+                "Folder - YELLOW": {
+                    "Name": "Folder - YELLOW",
+                    "Detail": "Poly pocket w/ brads",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Glue - Clear": {
+                    "Name": "Glue - Clear",
+                    "Detail": "4 oz, washable school glue",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Glue - White": {
+                    "Name": "Glue - White",
+                    "Detail": "4 oz, washable school glue",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Glue stick - Large": {
+                    "Name": "Glue stick - Large",
+                    "Detail": ".77 oz., washable, purple",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Glue stick - Regular": {
+                    "Name": "Glue stick - Regular",
+                    "Detail": ".21 oz., washable, purple",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Hand Soap": {
                     "Name": "Hand Soap",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
-                "Headphones_USBC": {
-                    "Name": "Earbuds/Headphones USB-C",
+                "Headphones - 3.5 mm jack": {
+                    "Name": "Headphones - 3.5 mm jack",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
-                "Highlighter_Yellow": {
-                    "Name": "Highlighter - Yellow",
+                "Headphones - USB/C": {
+                    "Name": "Headphones - USB/C",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
-                "Highlighter_Assorted": {
-                    "Name": "Highlighters - Any Color",
+                "Highlighter - 4 pack": {
+                    "Name": "Highlighter - 4 pack",
+                    "Detail": "Chisel tip, assorted colors",
                     "Unit": [],
                     "Count": 1
                 },
-                "Highlighter_Orange": {
-                    "Name": "Highlighter - Orange",
+                "Highlighter - ANY COLOR": {
+                    "Name": "Highlighter - ANY COLOR",
+                    "Detail": "assorted colors",
                     "Unit": [],
                     "Count": 1
                 },
-                "LaundryDetergent": {
+                "Highlighter - ORANGE": {
+                    "Name": "Highlighter - ORANGE",
+                    "Detail": "Chisel tip",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Highlighter - YELLOW": {
+                    "Name": "Highlighter - YELLOW",
+                    "Detail": "Chisel tip",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Laundry Detergent": {
                     "Name": "Laundry Detergent",
+                    "Detail": "liquid or powder",
                     "Unit": [],
                     "Count": 1
                 },
-                "ManilaPaper": {
-                    "Name": "Manila Paper",
-                    "Unit": ["Pack", "Packs"],
-                    "Count": 50
-                },
-                "Markers_Crayola": {
-                    "Name": "Markers Washable - Thick Tip",
-                    "Unit": ["Box", "Boxes"],
-                    "Count": 10
-                },
-                "NotebookPaper_WideRule": {
-                    "Name": "Notebook Paper - Wide-Ruled",
-                    "Unit": ["Pack","Packs"],
-                    "Count": 1
-                },
-                "PaperPlates": {
-                    "Name": "Paper Plates 9\" Uncoated",
-                    "Unit": ["Pack", "Packs"],
-                    "Count": 25
-                },
-                "PaperTowels": {
-                    "Name": "Paper Towel - Roll",
+                "Manila paper": {
+                    "Name": "Manila paper",
+                    "Detail": "9 x 12 in., 50 ct.",
                     "Unit": [],
                     "Count": 1
                 },
-                "PencilBag": {
-                    "Name": "Pencil Bag - Clear Window with Grommets",
+                "Markers - 10 count": {
+                    "Name": "Markers - 10 count",
+                    "Detail": "Ultra-clean, washable, thick tip",
                     "Unit": [],
                     "Count": 1
                 },
-                "PencilBox": {
-                    "Name": "Pencil Box - Plastic",
+                "Markers - 8 count": {
+                    "Name": "Markers - 8 count",
+                    "Detail": "Ultra Clean, washable, thin Tip",
                     "Unit": [],
                     "Count": 1
                 },
-                "PencilSharpener": {
-                    "Name": "Pencil Sharpener - Hand-held",
+                "Paper plates": {
+                    "Name": "Paper plates",
+                    "Detail": "9 inch, uncoated white, 25 count",
                     "Unit": [],
                     "Count": 1
                 },
-                "Pencils": {
-                    "Name": "Pencils #2",
+                "Paper towels": {
+                    "Name": "Paper towels",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
-                "Pens_Black": {
-                    "Name": "Pen - Black",
+                "Pencil box": {
+                    "Name": "Pencil box",
+                    "Detail": "8.5 x 5.75 x 2.5 in., plastic, assorted colors",
                     "Unit": [],
                     "Count": 1
                 },
-                "Pens_BlueOrBlack": {
-                    "Name": "Pens Black or Blue",
+                "Pencil pouch": {
+                    "Name": "Pencil pouch",
+                    "Detail": "Clear window with grommets, 10.5 x 7.5 in.",
                     "Unit": [],
                     "Count": 1
                 },
-                "PermanentMarker_Sharpie": {
-                    "Name": "Permanent Marker - Fine Point Black",
+                "Pencil Sharpener": {
+                    "Name": "Pencil Sharpener",
+                    "Detail": "hand",
                     "Unit": [],
                     "Count": 1
                 },
-                "PostItNotes": {
-                    "Name": "Post-it Notes - 3\" x 3\"",
-                    "Unit": ["Pad", "Pads"],
-                    "Count": 50
-                },
-                "PrimaryCompositionBook": {
-                    "Name": "Primary Composition Book - Red Baseline (100pgs)",
+                "Pencils - presharpened": {
+                    "Name": "Pencils - presharpened",
+                    "Detail": "No. 2, premium wood yellow, presharpened",
                     "Unit": [],
                     "Count": 1
                 },
-                "RedPens": {
-                    "Name": "Pen - Red",
+                "Pencils - unsharpened": {
+                    "Name": "Pencils - unsharpened",
+                    "Detail": "No. 2, premium wood, yellow, unsharpened",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Pens - BLACK or BLUE": {
+                    "Name": "Pens - BLACK or BLUE",
+                    "Detail": "",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Pens - RED": {
+                    "Name": "Pens - RED",
+                    "Detail": "",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Permanent Marker": {
+                    "Name": "Permanent Marker",
+                    "Detail": "black, fine point",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Post-it Notes": {
+                    "Name": "Post-it Notes",
+                    "Detail": "3 x 3 in., four 50-sheet pads, assorted colors",
                     "Unit": [],
                     "Count": 1
                 },
                 "Ruler": {
                     "Name": "Ruler",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
-                "Scissors_Blunt": {
-                    "Name": "Scissors - Blunt Tip",
+                "Scissors - blunt tip": {
+                    "Name": "Scissors - blunt tip",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
-                "Scissors_Pointed": {
-                    "Name": "Scissors - Pointed Tip",
+                "Scissors - pointed tip": {
+                    "Name": "Scissors - pointed tip",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
-                "SpiralNotebook_Any": {
-                    "Name": "Spiral Notebook - Wide Rule - Any Color (70pgs)",
+                "Single Storage Bag - Gallon": {
+                    "Name": "Single Storage Bag - Gallon",
+                    "Detail": "single bag",
                     "Unit": [],
                     "Count": 1
                 },
-                "SpiralNotebook_Green": {
-                    "Name": "Spiral Notebook - Wide Rule - Green (70pgs)",
+                "Spiral notebook - ANY COLOR": {
+                    "Name": "Spiral notebook - ANY COLOR",
+                    "Detail": "1 subject, wide ruled, non-perf, 70 ct",
                     "Unit": [],
                     "Count": 1
                 },
-                "SpiralNotebook_Red": {
-                    "Name": "Spiral Notebook - Wide Rule - Red (70pgs)",
+                "Spiral notebook - GREEN": {
+                    "Name": "Spiral notebook - GREEN",
+                    "Detail": "1 subject, wide ruled, non-perf, 70 ct",
                     "Unit": [],
                     "Count": 1
                 },
-                "SpiralNotebook_Yellow": {
-                    "Name": "Spiral Notebook - Wide Rule - Yellow (70pgs)",
+                "Spiral notebook - RED": {
+                    "Name": "Spiral notebook - RED",
+                    "Detail": "1 subject, wide ruled, non-perf, 70 ct",
                     "Unit": [],
                     "Count": 1
                 },
-                "StorageBag_Gallon": {
+                "Spiral notebook - YELLOW": {
+                    "Name": "Spiral notebook - YELLOW",
+                    "Detail": "1 subject, wide ruled, non-perf, 70 ct",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Storage Bags - Gallon": {
                     "Name": "Storage Bags - Gallon",
+                    "Detail": "20 ct box",
                     "Unit": [],
                     "Count": 1
                 },
-                "StorageBag_Quart": {
-                    "Name": "Storage Bags - Quart ",
+                "Storage Bags - Quart": {
+                    "Name": "Storage Bags - Quart",
+                    "Detail": "25 ct box",
                     "Unit": [],
                     "Count": 1
                 },
-                "StorageBag_Sandwich": {
+                "Storage Bags - Sandwich": {
                     "Name": "Storage Bags - Sandwich",
-                    "Unit": ["Box", "Boxes"],
-                    "Count": 50
+                    "Detail": "50-ct box",
+                    "Unit": [],
+                    "Count": 1
                 },
-                "StorageBag_Snack": {
-                    "Name": "Storage Bags - Snack",
-                    "Unit": ["Box", "Boxes"],
-                    "Count": 50
+                "Tab Dividers": {
+                    "Name": "Tab Dividers",
+                    "Detail": "pack of 8",
+                    "Unit": [],
+                    "Count": 1
                 },
                 "Tape": {
                     "Name": "Tape",
+                    "Detail": "",
                     "Unit": [],
                     "Count": 1
                 },
-                "Watercolors_Crayola": {
-                    "Name": "Watercolors (8ct)",
+                "Three Ring Binder - 0.5 in.": {
+                    "Name": "Three Ring Binder - 0.5 in.",
+                    "Detail": "",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Three Ring Binder - 1.5 in.": {
+                    "Name": "Three Ring Binder - 1.5 in.",
+                    "Detail": "",
+                    "Unit": [],
+                    "Count": 1
+                },
+                "Watercolors": {
+                    "Name": "Watercolors",
+                    "Detail": "Washable, with brush, 8 ct",
                     "Unit": [],
                     "Count": 1
                 }
@@ -300,245 +400,716 @@
             "SchoolSupplies": {
                 "Glen Rose ISD - Elementary": {
                     "Pre-K": {
-                        "BabyWipes": { "Total": 2 },
-                        "Crayons_Crayola": { "Total": 2 },
-                        "FacialTissue": { "Total": 1 },
-                        "Glue_Elmers": { "Total": 1 },
-                        "GlueStick_Elmers": { "Total": 4 },
-                        "Headphones_USBC": { "Total": 1 },
-                        "Markers_Crayola": { "Total": 1 },
-                        "PencilBox": { "Total": 1 },
-                        "Scissors_Blunt": { "Total": 1 },
-                        "StorageBag_Gallon": { "Total": 1, "Sex": "Girls" },
-                        "StorageBag_Sandwich": { "Total": 1, "Sex": "Boys" }
+                        "Baby wipes": {
+                            "Total": 4
+                        },
+                        "Crayons": {
+                            "Total": 2
+                        },
+                        "Facial tissue": {
+                            "Total": 1
+                        },
+                        "Glue - White": {
+                            "Total": 1
+                        },
+                        "Glue stick - Regular": {
+                            "Total": 4
+                        },
+                        "Headphones - USB/C": {
+                            "Total": 1
+                        },
+                        "Markers - 10 count": {
+                            "Total": 1
+                        },
+                        "Paper plates": {
+                            "Total": 4,
+                            "Sex": "Boys"
+                        },
+                        "Pencil box": {
+                            "Total": 1
+                        },
+                        "Scissors - blunt tip": {
+                            "Total": 1
+                        },
+                        "Storage Bags - Gallon": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        }
                     },
                     "Kindergarten": {
-                        "BabyWipes": { "Total": 1, "Sex": "Girls" },
-                        "Crayons_Crayola": { "Total": 4 },
-                        "DryEraseMarker_Fine": { "Total": 4 },
-                        "Eraser_Pink": { "Total": 4 },
-                        "FacialTissue": { "Total": 2 },
-                        "Folder_Red": { "Total": 1 },
-                        "Folder_Yellow": { "Total": 1 },
-                        "Glue_Elmers": { "Total": 2 },
-                        "GlueStick_Large": { "Total": 10 },
-                        "Headphones_USBC": { "Total": 1 },
-                        "Markers_Crayola": { "Total": 1 },
-                        "PaperPlates": { "Total": 1, "Sex": "Boys" },
-                        "Pencils": { "Total": 12 },
-                        "PrimaryCompositionBook": { "Total": 1 },
-                        "Scissors_Blunt": { "Total": 1 },
-                        "StorageBag_Gallon": { "Total": 1, "Sex": "Boys" },
-                        "StorageBag_Snack": { "Total": 1, "Sex": "Girls" },
-                        "Watercolors_Crayola": { "Total": 1 }
+                        "Baby wipes": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        },
+                        "Composition book - Primary": {
+                            "Total": 1
+                        },
+                        "Crayons": {
+                            "Total": 4
+                        },
+                        "Dry Erase Markers - Fine tip": {
+                            "Total": 4
+                        },
+                        "Eraser - Pink": {
+                            "Total": 2
+                        },
+                        "Facial tissue": {
+                            "Total": 2
+                        },
+                        "Folder - BLUE": {
+                            "Total": 1
+                        },
+                        "Folder - YELLOW": {
+                            "Total": 1
+                        },
+                        "Glue - White": {
+                            "Total": 2
+                        },
+                        "Glue stick - Large": {
+                            "Total": 10
+                        },
+                        "Headphones - USB/C": {
+                            "Total": 1
+                        },
+                        "Markers - 10 count": {
+                            "Total": 1
+                        },
+                        "Paper plates": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        },
+                        "Pencils - unsharpened": {
+                            "Total": 144
+                        },
+                        "Scissors - blunt tip": {
+                            "Total": 1
+                        },
+                        "Storage Bags - Gallon": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        },
+                        "Storage Bags - Sandwich": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        },
+                        "Watercolors": {
+                            "Total": 1
+                        }
                     },
                     "1st": {
-                        "BabyWipes": { "Total": 1 },
-                        "CompositionBook_WideRuled": { "Total": 1 },
-                        "Crayons_Crayola": { "Total": 4 },
-                        "DryEraseMarker_Fine": { "Total": 2 },
-                        "Eraser_Pink": { "Total": 2 },
-                        "FacialTissue": { "Total": 2 },
-                        "Folder_Green": { "Total": 1 },
-                        "Folder_Red": { "Total": 1 },
-                        "Glue_Elmers": { "Total": 1 },
-                        "GlueStick_Elmers": { "Total": 12 },
-                        "Headphones_USBC": { "Total": 1 },
-                        "Markers_Crayola": { "Total": 2 },
-                        "PencilBox": { "Total": 1 },
-                        "Pencils": { "Total": 12 },
-                        "PermanentMarker_Sharpie": { "Total": 1 },
-                        "PrimaryCompositionBook": { "Total": 1 },
-                        "Scissors_Blunt": { "Total": 1 },
-                        "StorageBag_Gallon": { "Total": 1, "Sex": "Boys" },
-                        "StorageBag_Quart": { "Total": 1, "Sex": "Girls" },
-                        "Watercolors_Crayola": { "Total": 2 }
+                        "Baby wipes": {
+                            "Total": 1
+                        },
+                        "Colored Pencils": {
+                            "Total": 2
+                        },
+                        "Composition book - Primary": {
+                            "Total": 2
+                        },
+                        "Composition book - Wide-ruled": {
+                            "Total": 1
+                        },
+                        "Crayons": {
+                            "Total": 6
+                        },
+                        "Dry Erase Markers - Fine tip": {
+                            "Total": 16
+                        },
+                        "Eraser - Pink": {
+                            "Total": 2
+                        },
+                        "Facial tissue": {
+                            "Total": 2
+                        },
+                        "Folder - GREEN": {
+                            "Total": 1
+                        },
+                        "Folder - RED": {
+                            "Total": 1
+                        },
+                        "Glue - White": {
+                            "Total": 1
+                        },
+                        "Glue stick - Regular": {
+                            "Total": 6
+                        },
+                        "Headphones - USB/C": {
+                            "Total": 1
+                        },
+                        "Markers - 10 count": {
+                            "Total": 2
+                        },
+                        "Pencil box": {
+                            "Total": 1
+                        },
+                        "Pencils - unsharpened": {
+                            "Total": 12
+                        },
+                        "Scissors - blunt tip": {
+                            "Total": 1
+                        },
+                        "Storage Bags - Gallon": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        },
+                        "Storage Bags - Quart": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        },
+                        "Watercolors": {
+                            "Total": 1
+                        }
                     },
                     "2nd": {
-                        "Crayons_Crayola": { "Total": 3 },
-                        "DryEraseMarker_Chisel": { "Total": 4 },
-                        "Eraser_Pink": { "Total": 2 },
-                        "FacialTissue": { "Total": 2 },
-                        "Folder_Red": { "Total": 1 },
-                        "Folder_Yellow": { "Total": 1 },
-                        "Glue_Elmers": { "Total": 1 },
-                        "GlueStick_Elmers": { "Total": 12 },
-                        "Headphones_USBC": { "Total": 1 },
-                        "Highlighter_Yellow": { "Total": 1 },
-                        "Markers_Crayola": { "Total": 2 },
-                        "PencilBox": { "Total": 1 },
-                        "Pencils": { "Total": 36 },
-                        "Scissors_Pointed": { "Total": 1 },
-                        "SpiralNotebook_Green": { "Total": 1 },
-                        "SpiralNotebook_Red": { "Total": 1 },
-                        "SpiralNotebook_Yellow": { "Total": 1 },
-                        "StorageBag_Gallon": { "Total": 1, "Sex": "Boys" },
-                        "StorageBag_Quart": { "Total": 1, "Sex": "Girls" }
+                        "Crayons": {
+                            "Total": 3
+                        },
+                        "Dry Erase Markers - Chisel tip": {
+                            "Total": 4
+                        },
+                        "Eraser - Pink": {
+                            "Total": 2
+                        },
+                        "Facial tissue": {
+                            "Total": 2
+                        },
+                        "Folder - RED": {
+                            "Total": 1
+                        },
+                        "Folder - YELLOW": {
+                            "Total": 1
+                        },
+                        "Glue - White": {
+                            "Total": 1
+                        },
+                        "Glue stick - Regular": {
+                            "Total": 12
+                        },
+                        "Headphones - USB/C": {
+                            "Total": 1
+                        },
+                        "Highlighter - YELLOW": {
+                            "Total": 1
+                        },
+                        "Markers - 10 count": {
+                            "Total": 2
+                        },
+                        "Pencil box": {
+                            "Total": 1
+                        },
+                        "Pencils - unsharpened": {
+                            "Total": 36
+                        },
+                        "Scissors - pointed tip": {
+                            "Total": 1
+                        },
+                        "Spiral notebook - GREEN": {
+                            "Total": 1
+                        },
+                        "Spiral notebook - RED": {
+                            "Total": 1
+                        },
+                        "Spiral notebook - YELLOW": {
+                            "Total": 1
+                        },
+                        "Storage Bags - Gallon": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        },
+                        "Storage Bags - Quart": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        }
                     }
                 },
-
                 "Glen Rose ISD - Intermediate": {
                     "3rd": {
-                        "Binder_1in": { "Total": 1 },
-                        "ColoredPencils": { "Total": 2 },
-                        "CompositionBook_WideRuled": { "Total": 4 },
-                        "ConstructionPaper": { "Total": 1, "Sex": "Girls" },
-                        "Crayons_Crayola": { "Total": 1 },
-                        "Earbuds": { "Total": 1 },
-                        "Eraser_Pink": { "Total": 2 },
-                        "FacialTissue": { "Total": 4 },
-                        "Folder_Blue": { "Total": 1 },
-                        "Folder_Green": { "Total": 1 },
-                        "Folder_Purple": { "Total": 1 },
-                        "Folder_Red": { "Total": 1 },
-                        "GlueStick_Elmers": { "Total": 24 },
-                        "Highlighter_Assorted": { "Total": 4 },
-                        "ManilaPaper": { "Total": 1, "Sex": "Boys" },
-                        "NotebookPaper_WideRule": { "Total": 2 },
-                        "PencilBag": { "Total": 1 },
-                        "Pencils": { "Total": 48 },
-                        "Scissors_Pointed": { "Total": 1 },
-                        "SpiralNotebook_Any": { "Total": 4 }
+                        "Colored Pencils": {
+                            "Total": 2
+                        },
+                        "Composition book - Wide-ruled": {
+                            "Total": 5
+                        },
+                        "Construction paper": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        },
+                        "Crayons": {
+                            "Total": 1
+                        },
+                        "Disinfecting wipes": {
+                            "Total": 1
+                        },
+                        "Eraser - Pink": {
+                            "Total": 4
+                        },
+                        "Facial tissue": {
+                            "Total": 5
+                        },
+                        "Filler paper - 120 ct": {
+                            "Total": 2
+                        },
+                        "Folder - BLUE": {
+                            "Total": 2
+                        },
+                        "Folder - RED": {
+                            "Total": 2
+                        },
+                        "Glue stick - Regular": {
+                            "Total": 24
+                        },
+                        "Headphones - 3.5 mm jack": {
+                            "Total": 1
+                        },
+                        "Highlighter - 4 pack": {
+                            "Total": 1
+                        },
+                        "Manila paper": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        },
+                        "Markers - 8 count": {
+                            "Total": 1
+                        },
+                        "Pencil pouch": {
+                            "Total": 1
+                        },
+                        "Pencils - presharpened": {
+                            "Total": 48
+                        },
+                        "Scissors - pointed tip": {
+                            "Total": 1
+                        },
+                        "Spiral notebook - ANY COLOR": {
+                            "Total": 1
+                        },
+                        "Storage Bags - Gallon": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        },
+                        "Storage Bags - Quart": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        }
                     },
                     "4th": {
-                        "ColoredPencils": { "Total": 1 },
-                        "CompositionBook_WideRuled": { "Total": 4 },
-                        "DryEraseMarker_Fine": { "Total": 12 },
-                        "Earbuds": { "Total": 1 },
-                        "FacialTissue": { "Total": 3 },
-                        "Folder_Blue": { "Total": 1 },
-                        "Folder_Green": { "Total": 1 },
-                        "Folder_Red": { "Total": 1 },
-                        "Folder_Yellow": { "Total": 1 },
-                        "Glue_Elmers": { "Total": 2 },
-                        "GlueStick_Elmers": { "Total": 12 },
-                        "Markers_Crayola": { "Total": 1 },
-                        "NotebookPaper_WideRule": { "Total": 1 },
-                        "PaperTowels": { "Total": 1, "Sex": "Boys" },
-                        "PencilBag": { "Total": 1 },
-                        "Pencils": { "Total": 72 },
-                        "StorageBag_Gallon": { "Total": 1, "Sex": "Girls" }
+                        "Colored Pencils": {
+                            "Total": 1
+                        },
+                        "Composition book - Wide-ruled": {
+                            "Total": 4
+                        },
+                        "Dry Erase Markers - Fine tip": {
+                            "Total": 24
+                        },
+                        "Earbuds": {
+                            "Total": 1
+                        },
+                        "Eraser - Pencil Cap": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        },
+                        "Facial tissue": {
+                            "Total": 3
+                        },
+                        "Folder - BLUE": {
+                            "Total": 1
+                        },
+                        "Folder - GREEN": {
+                            "Total": 1
+                        },
+                        "Folder - RED": {
+                            "Total": 1
+                        },
+                        "Folder - YELLOW": {
+                            "Total": 1
+                        },
+                        "Glue stick - Regular": {
+                            "Total": 12
+                        },
+                        "Markers - 10 count": {
+                            "Total": 1
+                        },
+                        "Paper towels": {
+                            "Total": 1
+                        },
+                        "Pencil pouch": {
+                            "Total": 1
+                        },
+                        "Pencils - presharpened": {
+                            "Total": 72
+                        },
+                        "Storage Bags - Gallon": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        }
                     },
                     "5th": {
-                        "ColoredPencils": { "Total": 1 },
-                        "CompositionBook_WideRuled": { "Total": 5 },
-                        "Crayons_Crayola": { "Total": 1, "Sex": "Girls" },
-                        "DryEraseMarker_Chisel": { "Total": 2 },
-                        "EarbudAdapter": { "Total": 1 },
-                        "Earbuds": { "Total": 1 },
-                        "Eraser_Cap": { "Total": 1 },
-                        "FacialTissue": { "Total": 3 },
-                        "Folder_Green": { "Total": 1 },
-                        "Folder_Purple": { "Total": 1 },
-                        "Folder_Yellow": { "Total": 1 },
-                        "Glue_Elmers": { "Total": 1, "Sex": "Boys" },
-                        "GlueStick_Elmers": { "Total": 12 },
-                        "Highlighter_Yellow": { "Total": 1 },
-                        "Highlighter_Orange": { "Total": 1 },
-                        "NotebookPaper_WideRule": { "Total": 1 },
-                        "PencilBag": { "Total": 1 },
-                        "Pencils": { "Total": 60 },
-                        "PostItNotes": { "Total": 4 },
-                        "Scissors_Pointed": { "Total": 1 },
-                        "SpiralNotebook_Any": { "Total": 1 }
+                        "Colored Pencils": {
+                            "Total": 1
+                        },
+                        "Composition book - Wide-ruled": {
+                            "Total": 6
+                        },
+                        "Dry Erase Markers - Chisel tip": {
+                            "Total": 4
+                        },
+                        "Earbuds": {
+                            "Total": 1
+                        },
+                        "Eraser - Pink": {
+                            "Total": 2
+                        },
+                        "Facial tissue": {
+                            "Total": 3
+                        },
+                        "Filler paper - 120 ct": {
+                            "Total": 1,
+                            "Sex": "Boys"
+                        },
+                        "Folder - GREEN": {
+                            "Total": 1
+                        },
+                        "Folder - PURPLE": {
+                            "Total": 1
+                        },
+                        "Folder - YELLOW": {
+                            "Total": 1
+                        },
+                        "Glue stick - Regular": {
+                            "Total": 12
+                        },
+                        "Highlighter - ANY COLOR": {
+                            "Total": 2
+                        },
+                        "Pencil pouch": {
+                            "Total": 1
+                        },
+                        "Pencils - presharpened": {
+                            "Total": 60
+                        },
+                        "Post-it Notes": {
+                            "Total": 1
+                        },
+                        "Scissors - pointed tip": {
+                            "Total": 1
+                        },
+                        "Spiral notebook - ANY COLOR": {
+                            "Total": 2
+                        },
+                        "Storage Bags - Gallon": {
+                            "Total": 1,
+                            "Sex": "Girls"
+                        }
                     }
                 },
-
                 "Glen Rose ISD - Junior High": {
                     "6th": {
-                        "ColoredPencils": { "Total": 1 },
-                        "CompositionBook_WideRuled": { "Total": 1 },
-                        "DryEraseMarker_Fine": { "Total": 4 },
-                        "Headphones_USBC": { "Total": 1 },
-                        "Eraser_Pink": { "Total": 1 },
-                        "Folder_Any": { "Total": 3 },
-                        "Folder_Green": { "Total": 1 },
-                        "GlueStick_Elmers": { "Total": 2 },
-                        "Highlighter_Assorted": { "Total": 4 },
-                        "NotebookPaper_WideRule": { "Total": 1 },
-                        "PencilBag": { "Total": 1 },
-                        "PencilSharpener": { "Total": 1 },
-                        "Pencils": { "Total": 12 },
-                        "Pens_Black": { "Total": 12 },
-                        "RedPens": { "Total": 6 },
-                        "Scissors_Pointed": { "Total": 1 },
-                        "SpiralNotebook_Any": { "Total": 1 }
+                        "Colored Pencils": {
+                            "Total": 1
+                        },
+                        "Composition book - Wide-ruled": {
+                            "Total": 1
+                        },
+                        "Dry Erase Markers - Fine tip": {
+                            "Total": 4
+                        },
+                        "Earbuds": {
+                            "Total": 1
+                        },
+                        "Eraser - Pink": {
+                            "Total": 2
+                        },
+                        "Facial tissue": {
+                            "Total": 1
+                        },
+                        "Filler paper - 120 ct": {
+                            "Total": 1
+                        },
+                        "Folder - Any Color": {
+                            "Total": 3
+                        },
+                        "Folder - GREEN": {
+                            "Total": 1
+                        },
+                        "Glue stick - Regular": {
+                            "Total": 2
+                        },
+                        "Highlighter - ANY COLOR": {
+                            "Total": 4
+                        },
+                        "Pencil pouch": {
+                            "Total": 1
+                        },
+                        "Pencil Sharpener": {
+                            "Total": 1
+                        },
+                        "Pencils - unsharpened": {
+                            "Total": 12
+                        },
+                        "Pens - BLACK or BLUE": {
+                            "Total": 12
+                        },
+                        "Pens - RED": {
+                            "Total": 6
+                        },
+                        "Post-it Notes": {
+                            "Total": 1
+                        },
+                        "Scissors - pointed tip": {
+                            "Total": 1
+                        },
+                        "Single Storage Bag - Gallon": {
+                            "Total": 2
+                        },
+                        "Spiral notebook - ANY COLOR": {
+                            "Total": 1
+                        },
+                        "Tab Dividers": {
+                            "Total": 1
+                        },
+                        "Three Ring Binder - 0.5 in.": {
+                            "Total": 1
+                        },
+                        "Three Ring Binder - 1.5 in.": {
+                            "Total": 1
+                        }
                     },
                     "7th": {
-                        "ColoredPencils": { "Total": 2 },
-                        "CompositionBook_WideRuled": { "Total": 4 },
-                        "Headphones_USBC": { "Total": 1 },
-                        "Eraser_Pink": { "Total": 1 },
-                        "Folder_Any": { "Total": 2 },
-                        "Folder_Green": { "Total": 1 },
-                        "GlueStick_Elmers": { "Total": 14 },
-                        "Highlighter_Assorted": { "Total": 4 },
-                        "NotebookPaper_WideRule": { "Total": 1 },
-                        "PencilBag": { "Total": 1 },
-                        "PencilSharpener": { "Total": 1 },
-                        "Pencils": { "Total": 12 },
-                        "Pens_Black": { "Total": 12 },
-                        "RedPens": { "Total": 6 },
-                        "Scissors_Pointed": { "Total": 1 },
-                        "Tape": { "Total": 1 }
+                        "Colored Pencils": {
+                            "Total": 2
+                        },
+                        "Composition book - Wide-ruled": {
+                            "Total": 3
+                        },
+                        "Earbuds": {
+                            "Total": 1
+                        },
+                        "Eraser - Pink": {
+                            "Total": 2
+                        },
+                        "Facial tissue": {
+                            "Total": 2
+                        },
+                        "Filler paper - 120 ct": {
+                            "Total": 1
+                        },
+                        "Folder - Any Color": {
+                            "Total": 2
+                        },
+                        "Folder - RED": {
+                            "Total": 1
+                        },
+                        "Glue - White": {
+                            "Total": 1
+                        },
+                        "Glue stick - Regular": {
+                            "Total": 2
+                        },
+                        "Highlighter - ANY COLOR": {
+                            "Total": 4
+                        },
+                        "Pencil pouch": {
+                            "Total": 1
+                        },
+                        "Pencil Sharpener": {
+                            "Total": 1
+                        },
+                        "Pencils - unsharpened": {
+                            "Total": 24
+                        },
+                        "Pens - BLACK or BLUE": {
+                            "Total": 12
+                        },
+                        "Pens - RED": {
+                            "Total": 6
+                        },
+                        "Scissors - pointed tip": {
+                            "Total": 1
+                        },
+                        "Single Storage Bag - Gallon": {
+                            "Total": 2
+                        },
+                        "Tab Dividers": {
+                            "Total": 1
+                        },
+                        "Tape": {
+                            "Total": 2
+                        },
+                        "Three Ring Binder - 1.5 in.": {
+                            "Total": 1
+                        }
                     },
                     "8th": {
-                        "ColoredPencils": { "Total": 2 },
-                        "CompositionBook_WideRuled": { "Total": 3 },
-                        "DryEraseMarker_Fine": { "Total": 4 },
-                        "Headphones_USBC": { "Total": 1 },
-                        "Eraser_Pink": { "Total": 1 },
-                        "Folder_Any": { "Total": 2 },
-                        "Folder_Green": { "Total": 1 },
-                        "Folder_Red": { "Total": 1 },
-                        "GlueStick_Elmers": { "Total": 32 },
-                        "Highlighter_Assorted": { "Total": 4 },
-                        "NotebookPaper_WideRule": { "Total": 2 },
-                        "PencilBag": { "Total": 1 },
-                        "PencilSharpener": { "Total": 1 },
-                        "Pencils": { "Total": 12 },
-                        "Pens_Black": { "Total": 12 },
-                        "PermanentMarker_Sharpie": { "Total": 2 },
-                        "RedPens": { "Total": 6 },
-                        "Scissors_Pointed": { "Total": 1 }
+                        "Colored Pencils": {
+                            "Total": 2
+                        },
+                        "Composition book - Wide-ruled": {
+                            "Total": 3
+                        },
+                        "Dry Erase Markers - Chisel tip": {
+                            "Total": 2
+                        },
+                        "Earbuds": {
+                            "Total": 1
+                        },
+                        "Eraser - Pink": {
+                            "Total": 2
+                        },
+                        "Facial tissue": {
+                            "Total": 1
+                        },
+                        "Filler paper - 120 ct": {
+                            "Total": 1
+                        },
+                        "Folder - Any Color": {
+                            "Total": 2
+                        },
+                        "Folder - GREEN": {
+                            "Total": 1
+                        },
+                        "Glue stick - Regular": {
+                            "Total": 32
+                        },
+                        "Highlighter - ANY COLOR": {
+                            "Total": 8
+                        },
+                        "Pencil pouch": {
+                            "Total": 1
+                        },
+                        "Pencil Sharpener": {
+                            "Total": 1
+                        },
+                        "Pencils - unsharpened": {
+                            "Total": 24
+                        },
+                        "Pens - BLACK or BLUE": {
+                            "Total": 12
+                        },
+                        "Pens - RED": {
+                            "Total": 6
+                        },
+                        "Permanent Marker": {
+                            "Total": 2
+                        },
+                        "Scissors - pointed tip": {
+                            "Total": 1
+                        }
                     },
                     "JH SPED": {
-                        "ColoredPencils": { "Total": 1 },
-                        "DishLiquid": { "Total": 1 },
-                        "DishwasherPods": { "Total": 1 },
-                        "Eraser_Pink": { "Total": 1 },
-                        "FacialTissue": { "Total": 3 },
-                        "Folder_Any": { "Total": 2 },
-                        "GlueStick_Elmers": { "Total": 6 },
-                        "HandSoap": { "Total": 1 },
-                        "LaundryDetergent": { "Total": 1 },
-                        "Markers_Crayola": { "Total": 1 },
-                        "PencilBag": { "Total": 1 },
-                        "PencilBox": { "Total": 1 },
-                        "PencilSharpener": { "Total": 1 },
-                        "Scissors_Pointed": { "Total": 1 }
+                        "Colored Pencils": {
+                            "Total": 2
+                        },
+                        "Crayons": {
+                            "Total": 1
+                        },
+                        "Dish liquid": {
+                            "Total": 1
+                        },
+                        "Dishwasher pods": {
+                            "Total": 1
+                        },
+                        "Disinfecting wipes": {
+                            "Total": 1
+                        },
+                        "Dry Erase Markers - Chisel tip": {
+                            "Total": 4
+                        },
+                        "Eraser - Pencil Cap": {
+                            "Total": 6
+                        },
+                        "Eraser - Pink": {
+                            "Total": 2
+                        },
+                        "Facial tissue": {
+                            "Total": 3
+                        },
+                        "Folder - Any Color": {
+                            "Total": 2
+                        },
+                        "Glue - White": {
+                            "Total": 2
+                        },
+                        "Glue stick - Regular": {
+                            "Total": 6
+                        },
+                        "Hand Soap": {
+                            "Total": 1
+                        },
+                        "Laundry Detergent": {
+                            "Total": 1
+                        },
+                        "Markers - 10 count": {
+                            "Total": 1
+                        },
+                        "Pencil box": {
+                            "Total": 1
+                        },
+                        "Pencil pouch": {
+                            "Total": 1
+                        },
+                        "Pencil Sharpener": {
+                            "Total": 2
+                        },
+                        "Scissors - pointed tip": {
+                            "Total": 1
+                        }
                     }
                 },
-
                 "Glen Rose ISD - High": {
                     "High School": {
-                        "ColoredPencils": { "Total": 1 },
-                        "DryEraseMarker_Fine": { "Total": 2 },
-                        "Earbuds": { "Total": 1 },
-                        "Eraser_Pink": { "Total": 1 },
-                        "Folder_Any": { "Total": 2 },
-                        "GlueStick_Elmers": { "Total": 2 },
-                        "Highlighter_Assorted": { "Total": 2 },
-                        "NotebookPaper_WideRule": { "Total": 1 },
-                        "PencilBag": { "Total": 1 },
-                        "PencilSharpener": { "Total": 1 },
-                        "Pencils": { "Total": 12 },
-                        "Pens_BlueOrBlack": { "Total": 12 },
-                        "PermanentMarker_Sharpie": { "Total": 1 },
-                        "RedPens": { "Total": 6 },
-                        "Ruler": { "Total": 1 },
-                        "Scissors_Pointed": { "Total": 1 },
-                        "SpiralNotebook_Any": { "Total": 3 }
+                        "Colored Pencils": {
+                            "Total": 1
+                        },
+                        "Dry Erase Markers - Fine tip": {
+                            "Total": 2
+                        },
+                        "Earbuds": {
+                            "Total": 1
+                        },
+                        "Eraser - Pink": {
+                            "Total": 1
+                        },
+                        "Filler paper - 100 ct": {
+                            "Total": 1
+                        },
+                        "Folder - Any Color": {
+                            "Total": 2
+                        },
+                        "Glue stick - Regular": {
+                            "Total": 2
+                        },
+                        "Highlighter - ANY COLOR": {
+                            "Total": 2
+                        },
+                        "Pencil pouch": {
+                            "Total": 1
+                        },
+                        "Pencil Sharpener": {
+                            "Total": 1
+                        },
+                        "Pencils - unsharpened": {
+                            "Total": 12
+                        },
+                        "Pens - BLACK or BLUE": {
+                            "Total": 12
+                        },
+                        "Pens - RED": {
+                            "Total": 6
+                        },
+                        "Permanent Marker": {
+                            "Total": 1,
+                            "Note": "Brand preference: Sharpie"
+                        },
+                        "Ruler": {
+                            "Total": 1
+                        },
+                        "Scissors - pointed tip": {
+                            "Total": 1
+                        },
+                        "Spiral notebook - ANY COLOR": {
+                            "Total": 4
+                        }
                     }
                 }
             }
@@ -636,6 +1207,7 @@
                                     unit: item.Unit,
                                     quantity: supplyItem.Total * genderCount,
                                     countPerUnit: item.Count,
+                                    detail: item.Detail || "",
                                     note: supplyItem.Note || ""
                                 };
 
@@ -654,6 +1226,7 @@
                                         unit: item.Unit,
                                         quantity: supplyItem.Total * genderCount,
                                         countPerUnit: item.Count,
+                                        detail: item.Detail || "",
                                         note: `${supplyItem.Sex ? supplyItem.Sex + "/Other " : ""}${supplyItem.Note || ""}`
                                     };
                                 }
@@ -674,9 +1247,10 @@
             for (let [key, value] of sortedItems) {
                 const listItem = document.createElement("li");
                 const unit = value.unit.length > 0 && value.unit[0] ? (value.quantity > 1 ? value.unit[1] : value.unit[0]) : "";
-                const note = value.note ? `- ${value.note}` : "";
-                const perUnit = value.countPerUnit > 1 && unit ? `(${value.countPerUnit} per ${value.unit[0]})` : "";
-                listItem.innerHTML = `<input type="checkbox"> ${value.quantity} ${unit ? unit + " of" : ""} <strong>${value.text}</strong> ${perUnit}${note}`;
+                const detail = value.detail ? ` — ${value.detail}` : "";
+                const note = value.note ? ` — ${value.note}` : "";
+                const perUnit = value.countPerUnit > 1 && unit ? ` (${value.countPerUnit} per ${value.unit[0]})` : "";
+                listItem.innerHTML = `<input type="checkbox"> ${value.quantity} ${unit ? unit + " of " : ""}<strong>${value.text}</strong>${detail}${perUnit}${note}`;
                 combinedList.appendChild(listItem);
             }
 
@@ -696,10 +1270,11 @@
 
                         separateItems[school][grade][gender].forEach(item => {
                             const unit = item.unit.length > 0 && item.unit[0] ? (item.quantity > 1 ? item.unit[1] : item.unit[0]) : "";
-                            const note = item.note ? ` - ${item.note}` : "";
-                            const perUnit = item.countPerUnit > 1 && unit ? `(${item.countPerUnit} per ${item.unit[0]})` : "";
+                            const detail = item.detail ? ` — ${item.detail}` : "";
+                            const note = item.note ? ` — ${item.note}` : "";
+                            const perUnit = item.countPerUnit > 1 && unit ? ` (${item.countPerUnit} per ${item.unit[0]})` : "";
                             const listItem = document.createElement("li");
-                            listItem.innerHTML = `<input type="checkbox"> ${item.quantity} ${unit ? unit + " of" : ""} ${item.text} ${perUnit}${note}`;
+                            listItem.innerHTML = `<input type="checkbox"> ${item.quantity} ${unit ? unit + " of " : ""}${item.text}${detail}${perUnit}${note}`;
                             separateList.appendChild(listItem);
                         });
 
@@ -857,7 +1432,7 @@
 </head>
 
 <body>
-    <h2>GRISD School Supplies List Combiner 2025-2026 - Select Classes</h2>
+    <h2>GRISD School Supplies List Combiner 2026-2027 - Select Classes</h2>
     <div class="linksContainer">
         <a href="https://glenroseisdtx.sites.thrillshare.com/o/gres/article/2312598" target="_blank">Elementary</a>
         <a href="https://www.grisd.net/o/gri/page/school-supplies-list" target="_blank">Intermediate</a>
