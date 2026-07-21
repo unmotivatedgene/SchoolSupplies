@@ -1116,6 +1116,170 @@
         };
 
         const schoolSupplies = data.SchoolSupplies || {};
+        const analyticsSchoolNames = {
+            "Glen Rose ISD - Elementary": { slug: "elementary", label: "Elementary" },
+            "Glen Rose ISD - Intermediate": { slug: "intermediate", label: "Intermediate" },
+            "Glen Rose ISD - Junior High": { slug: "junior-high", label: "Junior High" },
+            "Glen Rose ISD - High": { slug: "high", label: "High" }
+        };
+        const pendingAnalyticsEvents = [];
+        const sentAnalyticsEvents = new Set();
+        let currentAnalyticsSelection = null;
+
+        function normalizeAnalyticsValue(value) {
+            return String(value)
+                .toLowerCase()
+                .replace(/&/g, " and ")
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-+|-+$/g, "");
+        }
+
+        function analyticsHash(value) {
+            let hash = 0x811c9dc5;
+            for (let index = 0; index < value.length; index++) {
+                hash ^= value.charCodeAt(index);
+                hash = Math.imul(hash, 0x01000193);
+            }
+            return (hash >>> 0).toString(16).padStart(8, "0");
+        }
+
+        function createAnalyticsSignature(selections) {
+            const groupedSelections = new Map();
+
+            selections.forEach(selection => {
+                const school = analyticsSchoolNames[selection.school] || {
+                    slug: normalizeAnalyticsValue(selection.school),
+                    label: selection.school
+                };
+                const gradeSlug = normalizeAnalyticsValue(selection.grade);
+                const typeSlug = selection.type === "Other" ? "other-na" : normalizeAnalyticsValue(selection.type);
+                const typeLabel = selection.type === "Other" ? "Other / N/A" : selection.type;
+                const key = `${school.slug}|${gradeSlug}|${typeSlug}`;
+                const existing = groupedSelections.get(key);
+
+                if (existing) {
+                    existing.count += selection.count;
+                } else {
+                    groupedSelections.set(key, {
+                        schoolSlug: school.slug,
+                        schoolLabel: school.label,
+                        gradeSlug,
+                        gradeLabel: selection.grade,
+                        typeSlug,
+                        typeLabel,
+                        count: selection.count
+                    });
+                }
+            });
+
+            const normalizedSelections = [...groupedSelections.values()].sort((first, second) => {
+                const firstKey = `${first.schoolSlug}|${first.gradeSlug}|${first.typeSlug}`;
+                const secondKey = `${second.schoolSlug}|${second.gradeSlug}|${second.typeSlug}`;
+                return firstKey.localeCompare(secondKey);
+            });
+
+            if (normalizedSelections.length === 0) {
+                return null;
+            }
+
+            const components = normalizedSelections.map(selection =>
+                `${selection.schoolSlug}.${selection.gradeSlug}.${selection.typeSlug}-${selection.count}`
+            );
+            const fullPath = components.join("__");
+            let path = fullPath;
+
+            if (fullPath.length > 220) {
+                const hash = analyticsHash(fullPath);
+                const keptComponents = [];
+
+                for (const component of components) {
+                    const nextComponents = [...keptComponents, component];
+                    const omittedCount = components.length - nextComponents.length;
+                    const suffix = `__more-${omittedCount}-${hash}`;
+                    if (`${nextComponents.join("__")}${suffix}`.length > 220) {
+                        break;
+                    }
+                    keptComponents.push(component);
+                }
+
+                const omittedCount = components.length - keptComponents.length;
+                path = keptComponents.length > 0
+                    ? `${keptComponents.join("__")}__more-${omittedCount}-${hash}`
+                    : `selection-${hash}`;
+            }
+
+            const description = normalizedSelections
+                .map(selection => `${selection.schoolLabel} / ${selection.gradeLabel} / ${selection.typeLabel} ×${selection.count}`)
+                .join("; ");
+
+            return { path, description };
+        }
+
+        function analyticsEventWasSent(eventPath) {
+            if (sentAnalyticsEvents.has(eventPath)) {
+                return true;
+            }
+
+            try {
+                return sessionStorage.getItem(`analytics:${eventPath}`) === "sent";
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function deliverAnalyticsEvent(event) {
+            if (!window.goatcounter || typeof window.goatcounter.count !== "function") {
+                return false;
+            }
+
+            try {
+                window.goatcounter.count({
+                    path: event.path,
+                    title: event.title,
+                    event: true
+                });
+                sentAnalyticsEvents.add(event.path);
+                try {
+                    sessionStorage.setItem(`analytics:${event.path}`, "sent");
+                } catch (error) {
+                    // In-memory deduplication still works if session storage is unavailable.
+                }
+                return true;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function trackUsageEvent(eventType, selection) {
+            if (!selection) {
+                return;
+            }
+
+            const eventPath = `${eventType}/${selection.path}`;
+            if (analyticsEventWasSent(eventPath)) {
+                return;
+            }
+
+            const actionLabel = eventType === "print" ? "Printed" : "Built";
+            const fullTitle = `${actionLabel}: ${selection.description}`;
+            const event = {
+                path: eventPath,
+                title: fullTitle.length > 200 ? `${fullTitle.slice(0, 199)}…` : fullTitle
+            };
+
+            if (!deliverAnalyticsEvent(event) && !pendingAnalyticsEvents.some(pending => pending.path === event.path)) {
+                pendingAnalyticsEvents.push(event);
+            }
+        }
+
+        function flushAnalyticsQueue() {
+            const queuedEvents = pendingAnalyticsEvents.splice(0);
+            queuedEvents.forEach(event => {
+                if (!analyticsEventWasSent(event.path) && !deliverAnalyticsEvent(event)) {
+                    pendingAnalyticsEvents.push(event);
+                }
+            });
+        }
 
         function populateSchools() {
             const schoolDropdown = document.querySelector(".schoolDropdown");
@@ -1158,6 +1322,7 @@
             let combinedItems = {};
             let studentLists = [];
             let totalStudents = 0;
+            let analyticsSelections = [];
 
             gradeSets.forEach((gradeSet) => {
                 const schoolDropdown = gradeSet.querySelector(".schoolDropdown");
@@ -1184,6 +1349,12 @@
                     }
 
                     totalStudents += genderCount;
+                    analyticsSelections.push({
+                        school,
+                        grade,
+                        type: gender,
+                        count: genderCount
+                    });
                     const individualItems = [];
                     const supplyList = schoolSupplies[school][grade];
 
@@ -1294,7 +1465,17 @@
                 ? 'Everything needed for the selected student.'
                 : 'Everything you need, totaled across all selected students.';
 
+            currentAnalyticsSelection = totalStudents > 0
+                ? createAnalyticsSignature(analyticsSelections)
+                : null;
+            trackUsageEvent('build', currentAnalyticsSelection);
+
             showResultsTab('combined');
+        }
+
+        function printShoppingLists() {
+            trackUsageEvent('print', currentAnalyticsSelection);
+            window.print();
         }
 
         function addGradeSet() {
@@ -2243,7 +2424,7 @@
                     <button class="tabButton active" type="button" role="tab" aria-selected="true" aria-controls="combinedPanel" data-tab="combined" onclick="showResultsTab('combined')">Combined list</button>
                     <button class="tabButton" id="individualTabButton" type="button" role="tab" aria-selected="false" aria-controls="individualPanel" data-tab="individual" onclick="showResultsTab('individual')">Individual lists</button>
                 </div>
-                <button class="printButton" type="button" onclick="window.print()" aria-label="Print shopping lists" title="Print shopping lists">
+                <button class="printButton" type="button" onclick="printShoppingLists()" aria-label="Print shopping lists" title="Print shopping lists">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M6 9V3h12v6"></path>
                         <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
@@ -2277,6 +2458,11 @@
 
         <footer class="pageFooter">This unofficial tool is provided to make school-supply shopping easier. Use the school links above to reference the official lists.</footer>
     </main>
+    <script
+        data-goatcounter="https://unmotivatedgene.goatcounter.com/count"
+        async
+        src="https://gc.zgo.at/count.js"
+        onload="flushAnalyticsQueue()"></script>
 </body>
 
 </html>
